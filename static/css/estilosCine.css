@@ -1,0 +1,78 @@
+#form-row{
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 2%;
+}
+.container{
+    background-color: rgb(247, 245, 246);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+/* BARRA DE NAVEGACION */
+.navbar{
+    background-color: #4cb6e7; 
+    font-size: 16px;
+    padding: 10px 5px;
+   
+} 
+.navbar-nav li a{
+
+    text-align: center;
+    font-size: 16px;
+    color: crimson;
+    padding: 18px 15px;
+    padding-bottom: 5px;
+}
+.contenedor-l{
+    background-color: rgb(247, 245, 246);
+    width: 30%;
+    justify-content: center; 
+    /* align-items: center; */
+    margin-left: 470px;
+    margin-top: 40px;
+    margin: o auto;
+    border-radius: 5px;
+    padding: 20px;
+    /* margin-top: 2%; */
+}
+#text-titulo{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: crimson; 
+}
+h2,h3,h4{
+    text-align: center;
+    margin-top: 20px;
+    padding-bottom: 0px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: crimson;
+}
+.pelicula img{
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    transition: all 0.5s linear;
+}
+.pelicula img:hover{
+    transform: scale(1.2);
+    border-radius: 25px;
+}
+.pelicula h4{
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: crimson;
+}
+.card{
+    border-radius: 4px;
+    align-items: center;
+    margin-top: 5px;
+}
+.container {
+    display: grid;
+  }

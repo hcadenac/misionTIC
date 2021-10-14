@@ -1,0 +1,76 @@
+    {% extends 'formBase.html' %}
+    {% block contenido %}
+    <style>
+  .form-group{
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 2%;
+    }
+  .contenedor-l{
+    background-color: rgb(247, 245, 246);
+    width: 30%;
+    
+    justify-content: center; 
+    margin-left: 477px;
+    margin-top: 40px;
+    margin: o auto;
+    border-radius: 5px;
+    padding: 20px;
+  }
+  .container{
+    background-color: rgb(247, 245, 246);
+    display: flex;
+    width: 30%;
+    justify-content: center;
+  } 
+  h3{
+    text-align: center;
+    margin-top: 20px;
+    padding-bottom: 0px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: crimson;
+}
+    </style>
+</head>
+<body>
+  <h3>CONSULTE AQUI LOS COMENTARIOS QUE NUESTROS USUARIOS HAN REALIZADO SOBRE LAS PELICULAS  EXHIBIDAS EN COLINA CINEMARK</h3>
+  <br>
+  <!-- <div class="container">
+  <div class="btn-group btn-justified">
+    <button type="button" class="btn btn-danger">Gestionar Tiquetes</button>
+    <button type="button" class="btn btn-danger">Gestionar Comentarios</button>
+  </div> -->
+</div>
+
+
+    <div class="contenedor-l">
+        <form action="">
+          <div class="mb-7">
+            <label for="selpel">Selecciona la pelicula:</label>
+                    <select class="form-control" id="sel1">
+                      <option>PATRULLA CANINA</option>
+                      <option>VIUDA NEGRA</option>
+                      <option>SHANG SHI</option>
+                      <option>EL ULTIMO MERCENARIO</option>
+                    </select>
+          </div>
+          <br>
+          <div class=div class="mb-7">
+            <label for="selCom">Seleccione Comentario</label>
+            <select class="form-control" id="sel1">
+              <option>COMENTARIO 1</option>
+              <option>COMENTARIO 2</option>
+              
+            </select>
+          </div>
+          <br>
+          <div class=div class="mb-7">
+            <label for="inputEmail">Comentario</label>
+            <textarea class="form-control" rows="5" id="comment"></textarea>
+          </div>
+          <br>
+          <!-- <button type="submit" class="mb-7 btn btn-danger" style= "width: 100%;">Guardar Comentario</button> -->
+        </form>
+      </div>
+</body>
+{% endblock %}

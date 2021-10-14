@@ -1,0 +1,81 @@
+    {% extends 'formBase.html' %}
+    {% block contenido %}
+    <style>
+  .form-group{
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 2%;
+    }
+  .contenedor-l{
+    background-color: rgb(247, 245, 246);
+    width: 30%;
+    
+    justify-content: center; 
+    margin-left: 477px;
+    margin-top: 40px;
+    margin: o auto;
+    border-radius: 5px;
+    padding: 20px;
+  }
+  .container{
+    background-color: rgb(247, 245, 246);
+    display: flex;
+    width: 30%;
+    justify-content: center;
+  } 
+    </style>
+</head>
+<body>
+  <!-- <h2>Button Group</h2> -->
+  <br>
+  <div class="container">
+  <div class="btn-group btn-justified">
+    <a href="{{ url_for('adminuser')}}" class="btn btn-danger">Gestionar Comentarios</a>
+  </div>
+</div>
+
+
+    <div class="contenedor-l">
+        <form action="">
+          <div class="mb-7">
+            <label for="sel1">Selecciona la pelicula:</label>
+                    <select class="form-control" id="sel1">
+                      <option>PATRULLA CANINA</option>
+                      <option>VIUDA NEGRA</option>
+                      <option>SHANG SHI</option>
+                      <option>EL ULTIMO MERCENARIO</option>
+                    </select>
+          </div>
+          <br>
+          <div class=div class="mb-7">
+            <label for="sel1">Seleccione la Funcion:</label>
+                    <select class="form-control" id="sel1">
+                      <option>Lunes - Mañana</option>
+                      <option>Martes - Tarde</option>
+                      <option>Miercoles - Tarde</option>
+                      <option>Miercoles - Tarde</option>
+                      <option>Jueves _Tarde</option>
+                      <option>Viernes -Noche</option>
+                      <option>Sabado - Noche</option>
+                      <option>Dmonigo - Noche</option>
+                    </select>
+          </div>
+          <br>
+          <div class=div class="mb-7">
+            <label for="inputValor">Valor</label>
+            <input type="text" class="form-control" id="inputEmail" placeholder="">
+          </div>
+          <br>
+          <div class=div class="mb-7">
+            <label for="inputEmail">Cantidad de Tiquetes</label>
+            <input type="text" class="form-control" id="inputEmail" placeholder="">
+          </div>
+          <br>
+          <button type="submit" class="mb-7 btn btn-danger" style= "width: 100%;">Comprar Tiquetes</button>
+          <br>
+          <br>
+          <button type="submit" class="mb-7 btn btn-danger" style= "width: 100%;">Gestionar Comentarios</button>
+        </form>
+      </div>
+</body>
+{% endblock %}

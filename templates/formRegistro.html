@@ -1,0 +1,61 @@
+
+  {% extends 'formBase.html' %}
+    
+  {% block contenido %}
+    <style>
+    h3{
+      text-align: center;
+      margin-top: 20px;
+      padding-bottom: 0px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: crimson;
+    }
+    </style>
+<body>
+    <h3>Regístrate en nuestra plataforma para disfrutar de los mejores beneficios y promociones en boletería, confitería y mucho mas.</h3>
+    <div class="contenedor-l">
+      <h3 style="text-align: center;">Registro Usuarios</h3>
+      <form id= "form-row" action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="mb-7">
+          {{ form.nombre.label }}
+          {{ form.nombre(class='form-control') }}
+          <!-- <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="" name="email"> -->
+        </div>
+        <div class="mb-7">
+          {{ form.identificacion.label }}
+          {{ form.identificacion(class='form-control') }}
+          <!-- <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="" name="email"> -->
+        </div>
+        <div class="mb-7">
+          <!-- {{ form.email.label }}
+          {{ form.email(class='form-control') }} -->
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="" name="email">
+        </div>
+        <div class="mb-7">
+          {{ form.password.label }}
+          {{ form.password(class='form-control') }}
+          <!-- <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="" name="email"> -->
+        </div>
+        <div class=div class="mb-7">
+          {{ form.confirm_paswd.label }}
+          {{ form.confirm_paswd(class='form-control') }}
+          <!-- <label for="pwd">Contraseña:</label>
+          <input type="password" class="form-control" id="pwd" placeholder="" name="pwd"> -->
+        </div>
+        <br>
+        {{ form.submit(class='form-control btn btn-danger') }}
+        <!-- <button type="submit" class="mb-7 btn btn-danger" style="width: 100%;">Ingresar</button> -->
+        <!-- <div class="grupo">
+          {% if mensaje %}
+              {{mensaje}}
+          {% endif %}
+      </div> -->
+      </form>
+    </div>
+</body>
+{% endblock %}
