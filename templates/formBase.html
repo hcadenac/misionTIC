@@ -23,12 +23,16 @@
 
         <ul class="nav navbar-nav " style="margin-left: 415px;"> 
           <li class="nav-item"><a href="{{ url_for('cartelera')}}" class="text-danger">Cartelera</a></li>
-          <li class="nav-item"><a href="{{ url_for('funciones')}}" class="text-danger">Funciones</a></li>
+          <!-- <li class="nav-item"><a href="{{ url_for('funciones')}}" class="text-danger">Funciones</a></li> -->
           <li class="nav-item"><a href="{{ url_for('comentario')}}" class="text-danger">Comentarios</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="{{ url_for('registro')}}" class="text-danger" ><i class="bi bi-person-fill"></i> Registrarse</a></li>
+          {% if current_user.is_anonymous %}
           <li><a href="{{ url_for('login')}}" class="text-danger" ><i class="bi bi-lock-fill"></i></span> Iniciar Sesion</a></li>
+          {% else %}
+          <li><a href="{{ url_for('logout')}}" class="text-danger" ><i class="bi bi-lock-fill"></i></span> Cerrar Sesion</a></li>
+          {% endif %}
         </ul>
       </div>
     </nav>
@@ -38,13 +42,13 @@
   {% endblock %}
     
 </body>
-<br>
-<footer class="bg-light text-center text-lg-start">
-  <!-- Copyright -->
+
+<!-- <footer class="bg-light text-center text-lg-start">
+  Copyright
   <div class="text-center p-3" style="background-color: rgba(89, 166, 238, 0.377);">
     © 2020 Copyright:
     <a class="text-dark" href="#">COLINA CINEMARK</a>
   </div>
-  <!-- Copyright -->
+  Copyright -->
 </footer>
 </html>

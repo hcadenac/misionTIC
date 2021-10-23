@@ -1,0 +1,233 @@
+{% extends 'formBase.html' %}
+
+  {% block contenido %}
+    <style>
+    body {
+      color: #675940;
+      background: #F5F7FA;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .table-wrapper {
+      width: 100%;
+      margin: 30px auto;
+      background: #fff;
+      padding: 1px;	
+      box-shadow: 0 1px 1px rgba(0,0,0,.05);
+      }
+  
+      .table-title {
+        background: #d80419;
+        color: white;
+        padding-bottom: 20px;
+        padding-top: 5px;
+        margin: 0 0 6px;
+        height: 45px;
+        border-radius: 5px;
+      }
+      .table-title h2 {
+        margin: 5px 0 0;
+        margin-left: 10px;
+        font-size: 22px;
+      }
+      table.table {
+          table-layout: fixed;
+      }
+      .table.table tr th, table.table tr td {
+          border-color: #e9e9e9;
+      }
+      table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+      }
+      table.table th:last-child {
+        width: 100px;
+      }
+      table.table td a {
+        cursor: pointer;
+        display: inline-block;
+        margin: 0 5px;
+        min-width: 24px;
+      }    
+    table.table td a.add {
+        color: #27C46B;
+      }
+      table.table td a.edit {
+        color: #FFC107;
+      }
+      table.table td a.delete {
+         color: #E34724;
+      }
+      table.table td i {
+        font-size: 19px;
+      }
+    table.table td a.add i {
+        font-size: 24px;
+        margin-right: -1px;
+        position: relative;
+        top: 3px;
+      }    
+      table.table .form-control {
+        height: 32px;
+        line-height: 32px;
+        box-shadow: none;
+        border-radius: 2px;
+      }
+    table.table .form-control.error {
+      border-color: #f50000;
+    }
+    table.table td .add {
+      display: none;
+    }
+    .table-title .btn-group {
+		float: right;
+	}
+	.table-title .btn {
+		color: #fff;
+		float: right;
+		font-size: 13px;
+		border: none;
+		min-width: 50px;
+		border-radius: 2px;
+		margin-right: 5px;
+	} 
+	.table-title .btn i {
+		float: left;
+		font-size: 21px;
+		margin-right: 5px;
+	} 
+	.table-title .btn span {
+		float: left;
+		margin-top: 2px;
+	}
+  #text-form{
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    color: #d80419;
+  }
+  </style>
+</head>
+<body>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissable" role="alert"> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="close"> 
+                <span aria-hidden="true" style="color: #ec0e20;">x</span> 
+            </button>
+        {{message}}
+        </div>
+      {% endfor %}
+  {% endif %}
+{% endwith %}
+  <div id="div-form">
+    <h3 style="text-align: center; color: rgb(233, 16, 16);">Bienvenido a Cinemark, {{ current_user.nombre }}</h3>
+    <h2 id="text-form" > GESTIONE LOS COMENTARIOS SOBRE NUESTRAS PELICULAS</h2>
+<div class="container">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <div class="table-title">
+          <div class="row">
+              <div class="col-sm-8" ><h2></h2></div>
+              <div class="col-sm-4">
+                <a href="/addComentario/{{ current_user.id }}" class="btn btn-success" data-toggle="modal" data-target="#mymodal"><i class="material-icons">&#xE147;</i> <span>Adicionar</span></a>
+              </div>
+          </div>
+        </div>
+       
+      <table class="table table-striped table-hover">
+      <!-- <table class="table table-bordered">  -->
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>TITULO</th>
+                  <th>CALIFICACION</th>
+                  <th>COMENTARIO </th>
+                  <th>ACCIONES</th> 
+              </tr>
+          </thead>
+          <tbody>
+            {% for l in lista %}
+              <tr>
+                {% for d in l %}
+                  <td>{{ d }}</td>
+                   {% endfor %}     
+                  <td>
+                    <a href="/editComentario/{{ current_user.nombre }}" class="edit" title="Edit" data-toggle="modal" data-target="#modaledit"><i class="material-icons">&#xE254;</i></a>
+                    <a href="/borraComentario/{{l[0]}}" class="delete" title="Delete" data-toggle="modal" onclick="return confirm('Esta Seguro de Borrar el Registro ?')"><i class="material-icons">&#xE872;</i></a>
+                  </td>
+              </tr>
+  <!-- Formulario para Editar Comentarios -->
+	<div id="modaledit" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form action="/editComentario/" method="POST">
+					<div class="modal-header">						
+						<h4 class="modal-title">Editar Comentario</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">	
+            <div class="form-group">
+							<label>ID</label>
+							<input type="text" class="form-control" name="id" value="{{l[0]}}" readonly>
+						</div>				
+						<div class="form-group">
+							<label>Calificacion</label>
+							<input type="text" class="form-control" name="calificacion" value="{{l[2]}}" required>
+						</div>
+						<div class="form-group">
+							<label>Comentario</label>
+							<textarea class="form-control" name="comentario" value="{{l[3]}}" required>{{l[3]}}</textarea>
+						</div>					
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+						<input type="submit" class="btn btn-info" value="Guardar">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+    {% endfor %}
+          </tbody>
+
+      </table>
+  </div>
+  <!-- Formulario para Ingresar Comentarios -->
+  <div id="mymodal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h4 class="modal-title">Adicionar Comentario</h4>
+          </div>
+          <div class="modal-body">
+             <form action="{{url_for('addComentario')}}" method="POST">
+                <div class="form-group">
+                   <label>pelicula:</label>
+                   <input type="text" class="form-control" name="name" required="1">
+                </div>
+                 <div class="form-group">
+                   <label>calificacion:</label>
+                   <input type="email" class="form-control" name="email" required="1">
+                </div>
+                 <div class="form-group">
+                   <label>Comentario:</label>
+                   <textarea class="form-control" name="comentario" value="" required></textarea>
+                   <!-- <input type="number" class="form-control" name="phone" required="1"> -->
+                </div>
+                <div class="form-group">
+                   <button class="btn btn-primary" type="submit">Guardar Comentario</button>
+                </div>
+             </form>
+          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+       </div>
+    </div>
+ </div>
+  
+</div>
+
+</body>
+{% endblock %}

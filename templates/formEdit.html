@@ -1,0 +1,120 @@
+{% extends 'formBase.html' %}
+{% block contenido %}
+
+
+<h3 style="text-align: center; color: rgb(233, 16, 16);">Hola {{ current_user.nombre }}, Modulo de Edicion de Registros de {{ nombre }} en la plataforma de Cinemark.</h3>
+<div class="contenedor-l" Style="width: 40%; margin-left: 423px;">
+  <h3 style="text-align: center; color: rgb(233, 16, 16);">Editar Registro</h3>
+
+  <form id= "form-row" action="" method="POST" novalidate>
+  {{ form.hidden_tag() }}
+
+  <!-- ####crea formulario para editar peliculas#### -->
+  {% if nombre == 'peliculas' %}
+    <div class="mb-7">
+      {{ form.titulo.label }}
+      {{ form.titulo(class='form-control', value =dato1) }}
+    </div>
+    <div class="mb-7">
+      {{ form.genero.label }}
+      {{ form.genero(class='form-control', value =dato2) }}
+    </div>
+    <div class="mb-7">
+      {{ form.duracion.label }}
+      {{ form.duracion(class='form-control', value =dato3) }}
+    </div>
+    <div class=div class="mb-7">
+      {{ form.clasificacion.label }}
+      {{ form.clasificacion(class='form-control', value =dato4) }}
+    </div>
+    <div class=div class="mb-7">
+      {{ form.estado.label }}
+      {{ form.estado(class='form-control', value =dato5) }}
+    </div>
+    <!-- <div class=div class="mb-7">
+      {{ form.resena.label }}
+      {{ form.resena(class='form-control') }}
+    </div> -->
+
+    <!-- ####crea formulario para Editar funciones#### -->
+    {% elif nombre =='funciones' %}
+    <div class="mb-7">
+      {{ form.id_sala.label }}
+      {{ form.id_sala(class='form-control', value =dato1) }}
+    </div>
+    <div class="mb-7">
+      {{ form.id_horario.label }}
+      {{ form.id_horario(class='form-control', value =dato2) }}
+    </div>
+    <div class="mb-7">
+      {{ form.id_pelicula.label }}
+      {{ form.id_pelicula(class='form-control', value =dato3) }}
+    </div>
+    <div class=div class="mb-7">
+      {{ form.valor.label }}
+      {{ form.valor(class='form-control', value =dato4) }}
+    </div>
+    <!--### crea formulario para editar usuarios ####-->
+    {% elif nombre =='usuarios' %}
+    <div class="mb-7">
+      {{ form.nombre.label }}
+      {{ form.nombre(class='form-control', value =dato1) }}
+    </div>
+    <div class="mb-7">
+      {{ form.usuario.label }}
+      {{ form.usuario(class='form-control', value =dato2) }}
+    </div>
+    <div class="mb-7">
+      {{ form.tipo.label }}
+      {{ form.tipo(class='form-control', value =dato3) }}
+    </div>
+    <!-- ####crea formulario para agregar horarios#### -->
+  {% elif nombre =='horarios' %}
+    <div class="mb-7">
+      {{ form.id_horario.label }}
+      {{ form.id_horario(class='form-control', value =dato1) }}
+    </div>
+    <div class="mb-7">
+      {{ form.dia.label }}
+      {{ form.dia(class='form-control', value =dato2) }}
+    </div>
+    <div class="mb-7">
+      {{ form.hora_funcion.label }}
+      {{ form.hora_funcion(class='form-control', value =dato3) }}
+  
+    <!-- ####crea formulario para agregar salas#### -->
+  {% elif nombre =='salas' %}
+  {% for data in datos %}
+  <h6>{{ data['nombre'] }}</h6>
+  <h6>{{ data['capacidad'] }}</h6>
+  {% endfor %}
+      <div class="mb-7">
+        {{ form.nombre_sala.label }}
+        {{ form.nombre_sala(class='form-control', value =dato1) }}
+      </div>
+      <div class="mb-7">
+        {{ form.capacidad.label }}
+        {{ form.capacidad(class='form-control', value =dato2 ) }}
+        <!-- <input type="text" class="form-control" id="email" placeholder="" name="email" value = "{{ nombre }}"> -->
+    {% else %}
+
+    <h1>NO ES POSIBLE ADICIONAR  INFORMACION DE USUARIOS</h1>
+    {% endif %}
+    <br>
+    <div class="row" style="display: flex; justify-content: center;">
+      <div class="col-sm-6" >
+        <a href="/admin/{{ nombre }}" class="btn btn-danger" style="display: block;">Cancelar</a>
+      </div>
+      <div class="col-sm-6" >
+        {{ form.submit(class='form-control btn btn-danger') }}
+      </div>
+    </div>
+    <!-- <div class="grupo">
+      {% if mensaje %}
+          {{mensaje}}
+      {% endif %}
+    </div> -->
+  </form>
+  
+</div>
+{% endblock %}

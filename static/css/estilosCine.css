@@ -1,7 +1,7 @@
 #form-row{
     border-radius: 5px;
-    padding: 20px;
-    margin-top: 2%;
+    padding: 10px;
+    margin-top: 1%;
 }
 .container{
     background-color: rgb(247, 245, 246);
@@ -17,7 +17,7 @@
 .navbar{
     background-color: #4cb6e7; 
     font-size: 16px;
-    padding: 10px 5px;
+    padding: 5px 5px;
    
 } 
 .navbar-nav li a{
@@ -32,10 +32,10 @@
     background-color: rgb(247, 245, 246);
     width: 30%;
     justify-content: center; 
-    /* align-items: center; */
+    align-items: center;
     margin-left: 470px;
     margin-top: 40px;
-    margin: o auto;
+    margin: o auto; 
     border-radius: 5px;
     padding: 20px;
     /* margin-top: 2%; */
@@ -76,3 +76,5 @@ h2,h3,h4{
 .container {
     display: grid;
   }
+
+  

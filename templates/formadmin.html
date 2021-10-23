@@ -1,16 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-    
-    <title>Administracion</title>
     {% extends 'formBase.html' %}
     {% block contenido %}
     <style>
@@ -30,7 +17,7 @@
       .table-title {
         background: #d80419;
         color: white;
-        /* padding-bottom: 20px; */
+        padding-bottom: 20px;
         padding-top: 5px;
         margin: 0 0 6px;
         height: 45px;
@@ -117,70 +104,37 @@
     text-align: center;
     color: #d80419;
   }
-  
-  /* Modal styles */
-	.modal .modal-dialog {
-		max-width: 400px;
-	}
-	.modal .modal-header, .modal .modal-body, .modal .modal-footer {
-		padding: 20px 30px;
-	}
-	.modal .modal-content {
-		border-radius: 3px;
-	}
-	.modal .modal-footer {
-		background: #ecf0f1;
-		border-radius: 0 0 3px 3px;
-	}
-    .modal .modal-title {
-        display: inline-block;
-    }
-	.modal .form-control {
-		border-radius: 2px;
-		box-shadow: none;
-		border-color: #dddddd;
-	}
-	.modal textarea.form-control {
-		resize: vertical;
-	}
-	.modal .btn {
-		border-radius: 2px;
-		min-width: 100px;
-	}	
-	.modal form label {
-		font-weight: normal;
-	}	
+
   </style>
 </head>
 <body>
-<br>
   <div id="div-form">
-    <h2 id="text-form" > PANEL DE ADMINISTRACION CINEMA COLINA CINEMARK</h2>
+    <h3 style="text-align: center; color: rgb(233, 16, 16);">Bienvenido a Cinemark, {{ current_user.nombre }}</h3>
+    <h2 id="text-form" > PANEL DE ADMINISTRACION DE LA PLATAFORMA</h2>
 <div class="container border border-primary">
-    <br>
-     <div class="row vh-100" >  <!--, justify-content-center y align-items-center -->
-        <div class="col-md-12" style="height: 60px; width: 375px;" >
-          <div class="mb-7">
-            <label for="selpel">Selecciona elemento a Gestionar:</label>
-                    <select class="form-control" id="sel1">
-                      <option>Peliculas</option>
-                      <option>Usuarios</option>
-                      <option>Funciones</option>
-                      <option>Horarios</option>
-                      <option>Salas</option>
-                    </select>
-          </div>
-        </div>
-    </div>
+    <h6 style="text-align: center; color: rgb(14, 60, 158);">Seleccione el Tipo de Informacion que Desea Consultar</h6>
+    <div class="contenedor-opcion" style="text-align: center">
+
+      <form class="form-inline" action="" method="POST" >
+        {{ form.hidden_tag() }}
+        <!-- <div class="mb-7"> -->
+        <div class="form-group">
+        <!-- {{ form.opcion.label }} -->
+        {{ form.opcion(class='form-control') }}
+        </div> 
+        {{ form.submit(class='form-control btn btn-success') }}
+        <!-- </div> -->
+      </form>
+    </div>  
 </div>
 <div class="container">
   <div class="table-responsive">
     <div class="table-wrapper">
       <div class="table-title">
           <div class="row">
-              <div class="col-xs-6"><h2>{{nombre}}</h2></div>
-              <div class="col-xs-6">
-                <a href="#addModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar</span></a>
+              <div class="col-sm-8" ><h2></h2></div>
+              <div class="col-sm-4">
+                <a href="/add/{{ nombre }}" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar</span></a>
               </div>
           </div>
         </div>
@@ -200,15 +154,15 @@
           <tbody>
             {% for post in posts %}
               <tr>
-                  <td>{{ post['titulo'] }}</td>
-                  <td>{{ post['genero'] }}</td>
-                  <td>{{ post['duracion'] }}</td>
-                  <td>{{ post['clasificacion'] }}</td>
-                  <td>{{ post['estado'] }}</td>
+                  <td style="color:#0d457c;font-size:80%;">{{ post['titulo'] }}</td>
+                  <td style="color:#0d457c;font-size:80%;">{{ post['genero'] }}</td>
+                  <td style="color:#0d457c;font-size:80%;">{{ post['duracion'] }}</td>
+                  <td style="color:#0d457c;font-size:80%;">{{ post['clasificacion'] }}</td>
+                  <td style="color:#0d457c;font-size:80%;">{{ post['estado'] }}</td>
                   <!-- <td>{{ post['resena'] }}</td> -->
                   <td>
-                    <a href="#editModal" class="edit" title="Edit" data-toggle="modal"><i class="material-icons">&#xE254;</i></a>
-                    <a href="#deleteModal" class="delete" title="Delete" data-toggle="modal"><i class="material-icons">&#xE872;</i></a>
+                    <a href="/update/{{ nombre }} {{ post['id'] }}" class="edit" title="Edit" data-toggle="modal"><i class="material-icons">&#xE254;</i></a>
+                    <a href="/delete/{{ nombre }} {{ post['id'] }}" class="delete" title="Delete" data-toggle="modal" onclick="return confirm('Esta Seguro de Borrar el Registro ?')"><i class="material-icons">&#xE872;</i></a>
                   </td>
               </tr>
               {% endfor %}
@@ -229,14 +183,14 @@
             <tbody>
               {% for post in posts %}
                 <tr>
-                    <td>{{ post['nombre'] }}</td>
-                    <td>{{ post['identificacion'] }}</td>
-                    <td>{{ post['usuario'] }}</td>
-                    <td>{{ post['tipo'] }}</td>
+                    <td style="color:#0d457c;font-size:80%;">{{ post['nombre'] }}</td>
+                    <td style="color:#0d457c;font-size:80%;">{{ post['identificacion'] }}</td>
+                    <td style="color:#0d457c;font-size:80%;">{{ post['usuario'] }}</td>
+                    <td style="color:#0d457c;font-size:80%;">{{ post['tipo'] }}</td>
                     <!-- <td>{{ post['resena'] }}</td> -->
                     <td>
-                      <a href="#editModal" class="edit" title="Edit" data-toggle="modal"><i class="material-icons">&#xE254;</i></a>
-                      <a href="#deleteModal" class="delete" title="Delete" data-toggle="modal"><i class="material-icons">&#xE872;</i></a>
+                      <a href="/update/{{ nombre }} {{ post['id'] }}" class="edit" title="Edit" data-toggle="modal"><i class="material-icons">&#xE254;</i></a>
+                      <a href="/delete/{{ nombre }} {{ post['id'] }}" class="delete" title="Delete" data-toggle="modal" onclick="return confirm('Esta Seguro de Borrar el Registro ?')"><i class="material-icons">&#xE872;</i></a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -257,14 +211,14 @@
               <tbody>
                 {% for post in posts %}
                   <tr>
-                      <td>{{ post['id_sala'] }}</td>
-                      <td>{{ post['id_horario'] }}</td>
-                      <td>{{ post['id_pelicula'] }}</td>
-                      <td>{{ post['valor'] }}</td>
+                      <td style="color:#0d457c;font-size:80%;">{{ post['id_sala'] }}</td>
+                      <td style="color:#0d457c;font-size:80%;">{{ post['id_horario'] }}</td>
+                      <td style="color:#0d457c;font-size:80%;">{{ post['id_pelicula'] }}</td>
+                      <td style="color:#0d457c;font-size:80%;">{{ post['valor'] }}</td>
                       <!-- <td>{{ post['resena'] }}</td> -->
                       <td>
-                        <a href="#editModal" class="edit" title="Edit" data-toggle="modal"><i class="material-icons">&#xE254;</i></a>
-                        <a href="#deleteModal" class="delete" title="Delete" data-toggle="modal"><i class="material-icons">&#xE872;</i></a>
+                        <a href="/update/{{ nombre }} {{ post['id'] }}" class="edit" title="Edit" data-toggle="modal"><i class="material-icons">&#xE254;</i></a>
+                        <a href="/delete/{{ nombre }} {{ post['id'] }}" class="delete" title="Delete" data-toggle="modal" onclick="return confirm('Esta Seguro de Borrar el Registro ?')"><i class="material-icons">&#xE872;</i></a>
                       </td>
                   </tr>
                   {% endfor %}
@@ -283,14 +237,14 @@
                 </thead>
                 <tbody>
                   {% for post in posts %}
-                    <tr>
-                        <td>{{ post['id_horario'] }}</td>
-                        <td>{{ post['dia'] }}</td>
-                        <td>{{ post['hora_fun'] }}</td>
+                    <tr style="height: 20px";>
+                        <td style="color:#0d457c;font-size:80%;" >{{ post['id_horario'] }}</td>
+                        <td style="color:#0d457c;font-size:80%;">{{ post['dia'] }}</td>
+                        <td style="color:#0d457c;font-size:80%;">{{ post['hora_fun'] }}</td>
                         <!-- <td>{{ post['resena'] }}</td> -->
                         <td>
-                          <a href="#editModal" class="edit" title="Edit" data-toggle="modal"><i class="material-icons">&#xE254;</i></a>
-                          <a href="#deleteModal" class="delete" title="Delete" data-toggle="modal"><i class="material-icons">&#xE872;</i></a>
+                          <a href="/update/{{ nombre }} {{ post['id_horario'] }}" class="edit" title="Edit" data-toggle="modal"><i class="material-icons">&#xE254;</i></a>
+                          <a href="/delete/{{ nombre }} {{ post['id'] }}" class="delete" title="Delete" data-toggle="modal" onclick="return confirm('Esta Seguro de Borrar el Registro ?')"><i class="material-icons">&#xE872;</i></a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -309,12 +263,12 @@
                   <tbody>
                     {% for post in posts %}
                       <tr>
-                          <td>{{ post['nombre'] }}</td>
-                          <td>{{ post['capacidad'] }}</td>
+                          <td style="color:#0d457c;font-size:70%;">{{ post['nombre'] }}</td>
+                          <td style="color:#0d457c;font-size:70%;">{{ post['capacidad'] }}</td>
                           <!-- <td>{{ post['resena'] }}</td> -->
                           <td>
-                            <a href="#editModal" class="edit" title="Edit" data-toggle="modal"><i class="material-icons">&#xE254;</i></a>
-                            <a href="#deleteModal" class="delete" title="Delete" data-toggle="modal"><i class="material-icons">&#xE872;</i></a>
+                            <a href="/update/{{ nombre }} {{ post['id'] }}" class="edit" title="Edit" data-toggle="modal"><i class="material-icons">&#xE254;</i></a>
+                            <a href="/delete/{{ nombre }} {{ post['id'] }}" class="delete" title="Delete" data-toggle="modal" onclick="return confirm('Esta Seguro de Borrar el Registro ?')"><i class="material-icons">&#xE872;</i></a>
                           </td>
                       </tr>
                       {% endfor %}
@@ -336,10 +290,10 @@
               <!-- {% for post in posts %} -->
                 <tr>
                     <!-- <td>{{ post['nombre'] }}</td> -->
-                    <td>nombre }</td>
-                    <td>nombre }</td>
-                    <td>nombre }</td>
-                    <td>nombre }</td>
+                    <td style="color:#0d457c;font-size:80%;">nombre</td>
+                    <td style="color:#0d457c;font-size:80%;">nombre</td>
+                    <td style="color:#0d457c;font-size:80%;">nombre</td>
+                    <td style="color:#0d457c;font-size:80%;">nombre</td>
                     <!-- <td>{{ post['capacidad'] }}</td> -->
                     <!-- <td>{{ post['resena'] }}</td> -->
                     <td>
@@ -351,7 +305,6 @@
             </tbody>
         </table>
       {% endif %}
-      
     </div>
   </div>
 </div> 

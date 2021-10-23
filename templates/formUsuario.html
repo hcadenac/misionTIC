@@ -1,81 +1,220 @@
     {% extends 'formBase.html' %}
     {% block contenido %}
-    <style>
-  .form-group{
-    border-radius: 5px;
-    padding: 20px;
-    margin-top: 2%;
-    }
-  .contenedor-l{
-    background-color: rgb(247, 245, 246);
-    width: 30%;
-    
-    justify-content: center; 
-    margin-left: 477px;
-    margin-top: 40px;
-    margin: o auto;
-    border-radius: 5px;
-    padding: 20px;
+<style>
+      .form-group{
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 1%;
+}
+.contenedor-l{
+  background-color: rgb(247, 245, 246);
+  width: 60%;
+  justify-content: center; 
+  /* align-items: center; */
+  margin-left: 290px;
+  margin-top: 10px;
+  margin: o auto;
+  border-radius: 5px;
+  /* padding: 10px; */
+  /* margin-top: 2%; */
+}
+body {
+      color: #566787;
+  background: #f5f5f5;
+  font-family: 'Varela Round', sans-serif;
+  font-size: 13px;
+}
+.table-responsive {
+      margin: 30px 0;
   }
+.table-wrapper {
+  min-width: 1000px;
+      background: #fff;
+      padding: 10px 15px;
+  border-radius: 3px;
+      box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  }
+.table-title { 
+  padding-bottom: 20px;
+  margin: 0 0 10px;       
+  /* padding-bottom: 15px; */
+  /* background: #435d7d;
+  color: #fff;
+  padding: 16px 30px; */
+  /* margin: -20px -25px 10px; */
+  border-radius: 3px 3px 0 0;
+  }
+  .table-title h2 {
+  margin: 2px 0 0;
+  font-size: 24px;
+}
+.table-title .btn-group {
+  float: right;
+  margin-right: 50px;
+}
+.table-title .btn {
+  color: #fff;
+  float: right;
+  font-size: 13px;
+  border: none;
+  min-width: 50px;
+  border-radius: 2px;
+  border: none;
+  outline: none !important;
+  margin-left: 10px;
+}
+.table-title .btn i {
+  float: left;
+  font-size: 21px;
+  margin-right: 5px;
+}
+.table-title .btn span {
+  float: left;
+  margin-top: 2px;
+}
+  table.table tr th, table.table tr td {
+  border-color: #e9e9e9;
+  padding: 12px 15px;
+  vertical-align: middle;
+  }
+table.table tr th:first-child {
+  width: 60px;
+}
+table.table tr th:last-child {
+  width: 100px;
+}
+  table.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #fcfcfc;
+}
+table.table-striped.table-hover tbody tr:hover {
+  background: #f5f5f5;
+}
+  table.table th i {
+      font-size: 13px;
+      margin: 0 5px;
+      cursor: pointer;
+  }	
+  table.table td:last-child i {
+  opacity: 0.9;
+  font-size: 22px;
+      margin: 0 5px;
+  }
+table.table td a {
+  font-weight: bold;
+  color: #01060f;
+  display: inline-block;
+  text-decoration: none;
+  outline: none !important;
+}
+table.table td a:hover {
+  color: #2196F3;
+}
+table.table td a.edit {
+      color: #FFC107;
+  }
+  table.table td a.delete {
+      color: #F44336;
+  }
+  table.table td i {
+      font-size: 19px;
+  }
+table.table .avatar {
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 10px;
+}
   .container{
-    background-color: rgb(247, 245, 246);
-    display: flex;
-    width: 30%;
-    justify-content: center;
-  } 
-    </style>
+  background-color: rgb(247, 245, 246);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+  </style>
 </head>
 <body>
-  <!-- <h2>Button Group</h2> -->
-  <br>
-  <div class="container">
-  <div class="btn-group btn-justified">
-    <a href="{{ url_for('adminuser')}}" class="btn btn-danger">Gestionar Comentarios</a>
-  </div>
-</div>
-
-
-    <div class="contenedor-l">
-        <form action="">
-          <div class="mb-7">
-            <label for="sel1">Selecciona la pelicula:</label>
-                    <select class="form-control" id="sel1">
-                      <option>PATRULLA CANINA</option>
-                      <option>VIUDA NEGRA</option>
-                      <option>SHANG SHI</option>
-                      <option>EL ULTIMO MERCENARIO</option>
-                    </select>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissable" role="alert"> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="close"> 
+                <span aria-hidden="true" style="color: #ec0e20;">x</span> 
+            </button>
+        {{message}}
+        </div>
+      {% endfor %}
+  {% endif %}
+{% endwith %}
+  <div class="contenedor-l">
+    <h3 style="text-align: center; color: rgb(233, 16, 16);">Bienvenido a Cinemark, {{ current_user.nombre }} </h3>
+      <h2 style="text-align: center; color: #f01532;">Compra de Tiquetes</h2>
+      <form id= "form-row" class="col-5 mx-auto border" style="margin-left: 110px;" method="POST">
+          <div class="form-row" >
+            <div class="form-group col-md-6">
+              <label for="inputNombre">Lista Peliculas</label>
+              <select class="form-control" id="sel1" name="pelicula">
+                {% for data in datos %}
+                <option>{{ data['titulo'] }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputapellido">Dia</label>
+              <select class="form-control" id="sel1" name ="dia">
+                  <option>LUNES</option>
+                  <option>MARTES</option>
+                  <option>MIERCOLES</option>
+                  <option>JUEVES</option>
+                  <option>VIERNES</option>
+                  <option>SABADO</option>
+                  <option>DOMINGO</option>
+                </select>
+            </div>
           </div>
-          <br>
-          <div class=div class="mb-7">
-            <label for="sel1">Seleccione la Funcion:</label>
-                    <select class="form-control" id="sel1">
-                      <option>Lunes - Mañana</option>
-                      <option>Martes - Tarde</option>
-                      <option>Miercoles - Tarde</option>
-                      <option>Miercoles - Tarde</option>
-                      <option>Jueves _Tarde</option>
-                      <option>Viernes -Noche</option>
-                      <option>Sabado - Noche</option>
-                      <option>Dmonigo - Noche</option>
-                    </select>
+          <div>
+          <button type="submit" class="mb-7 btn btn-success" style="margin-left: 10px;  width: 80%;">Consultar</button>
           </div>
-          <br>
-          <div class=div class="mb-7">
-            <label for="inputValor">Valor</label>
-            <input type="text" class="form-control" id="inputEmail" placeholder="">
-          </div>
-          <br>
-          <div class=div class="mb-7">
-            <label for="inputEmail">Cantidad de Tiquetes</label>
-            <input type="text" class="form-control" id="inputEmail" placeholder="">
-          </div>
-          <br>
-          <button type="submit" class="mb-7 btn btn-danger" style= "width: 100%;">Comprar Tiquetes</button>
-          <br>
-          <br>
-          <button type="submit" class="mb-7 btn btn-danger" style= "width: 100%;">Gestionar Comentarios</button>
-        </form>
+       </form>
       </div>
-</body>
+        <div class="container">
+          <div class="table-responsive">
+              <div class="table-wrapper" style="margin-left: 130px; border: solid 1px rgba(129, 140, 161, 0.705);">
+                  <table class="table table-striped table-hover">
+                      <thead>
+                          <tr>
+                              <th style="color: #000080;">COD</th>
+                              <th style="width: 400px; color: #000080;">TITULO</th>
+                              <th style="color: #000080;">DIA</th>
+                              <th style="color: #000080;">HORA</th>
+                              <th style="color: #000080;">SALA</th>
+                              <th style="color: #000080;" >VALOR</th>
+                              <th style="color: #000080;">COMPRAR</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for linea in lista %}
+                          <tr>
+                              {% for d in linea %}
+                              <td>{{ d }}</td>
+                              {% endfor %}
+                              <td>
+                                <a href="/ventas/{{ lista[0][0] }}" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xe854;</i>
+                              </td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+              
+          </div> 
+        </div>
+        
+          <div class="col-sm-10">
+            <a href="/gestionComentario/" class="btn btn-success" style="margin-left: 853px; padding-bottom: 5px; margin-bottom: 20px;" data-toggle="modal">Gestionar Comentarios</a>
+            <!-- <button type="button" onclick="'/editComentario/'" style="margin-left: 853px; padding-bottom: 5px; margin-bottom: 20px;" class="btn btn-info add-new"><i class="fa fa-plus"></i> Gestionar Comentarios</button> -->
+          </div>
+   
+    </div>
 {% endblock %}

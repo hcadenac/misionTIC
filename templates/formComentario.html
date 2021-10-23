@@ -34,43 +34,54 @@
 </head>
 <body>
   <h3>CONSULTE AQUI LOS COMENTARIOS QUE NUESTROS USUARIOS HAN REALIZADO SOBRE LAS PELICULAS  EXHIBIDAS EN COLINA CINEMARK</h3>
-  <br>
   <!-- <div class="container">
   <div class="btn-group btn-justified">
     <button type="button" class="btn btn-danger">Gestionar Tiquetes</button>
     <button type="button" class="btn btn-danger">Gestionar Comentarios</button>
   </div> -->
 </div>
-
-
     <div class="contenedor-l">
-        <form action="">
+        <form action="" method="POST" novalidate>
           <div class="mb-7">
+            
             <label for="selpel">Selecciona la pelicula:</label>
-                    <select class="form-control" id="sel1">
-                      <option>PATRULLA CANINA</option>
-                      <option>VIUDA NEGRA</option>
-                      <option>SHANG SHI</option>
-                      <option>EL ULTIMO MERCENARIO</option>
-                    </select>
+                
+                    <select class="form-control" id="sel1" name='pelicula'>
+                      {% for data in datos %}
+                      <option>{{ data['titulo'] }}</option>
+                      {% endfor %}
+                    </select>        
           </div>
           <br>
-          <div class=div class="mb-7">
-            <label for="selCom">Seleccione Comentario</label>
-            <select class="form-control" id="sel1">
-              <option>COMENTARIO 1</option>
-              <option>COMENTARIO 2</option>
-              
-            </select>
-          </div>
+          <button type="submit" class="mb-7 btn btn-danger" style= "width: 100%;">Mostrar Comentarios</button>
           <br>
-          <div class=div class="mb-7">
-            <label for="inputEmail">Comentario</label>
-            <textarea class="form-control" rows="5" id="comment"></textarea>
-          </div>
-          <br>
-          <!-- <button type="submit" class="mb-7 btn btn-danger" style= "width: 100%;">Guardar Comentario</button> -->
         </form>
-      </div>
+  </div>
+</div> 
+<br>
+<br>
+  <!-- <div class="container"> -->
+    <div class="table-responsive">
+        <div class="table-wrapper" style="background-color: #F8F9F9; border: solid 1px rgba(129, 140, 161, 0.705); width: 80%; margin-left: 135px;">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 100px; color: #000080;text-align: center;">USUARIO</th>
+                        <th style="width: 100px; color: #000080; text-align: center;"  >CALIFICACION</th>
+                        <th style="width: 500px; color: #000080; text-align: center;">COMENTARIO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  
+                    {% for l in lista %}
+                    <tr>
+                        {% for d in l %}
+                        <td>{{ d }}</td>
+                         {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        <!-- </div>   -->
 </body>
 {% endblock %}

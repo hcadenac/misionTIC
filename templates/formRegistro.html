@@ -12,10 +12,22 @@
     }
     </style>
 <body>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissable" role="alert"> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="close"> 
+                <span aria-hidden="true" style="color: #ec0e20;">x</span> 
+            </button>
+        {{message}}
+        </div>
+      {% endfor %}
+  {% endif %}
+{% endwith %}
     <h3>Regístrate en nuestra plataforma para disfrutar de los mejores beneficios y promociones en boletería, confitería y mucho mas.</h3>
     <div class="contenedor-l">
       <h3 style="text-align: center;">Registro Usuarios</h3>
-      <form id= "form-row" action="" method="post" novalidate>
+      <form id= "form-row" action="" method="POST" novalidate>
         {{ form.hidden_tag() }}
         <div class="mb-7">
           {{ form.nombre.label }}
@@ -24,16 +36,10 @@
           <input type="email" class="form-control" id="email" placeholder="" name="email"> -->
         </div>
         <div class="mb-7">
-          {{ form.identificacion.label }}
-          {{ form.identificacion(class='form-control') }}
-          <!-- <label for="email">Email:</label>
+          {{ form.usuario.label }}
+          {{ form.usuario(class='form-control') }}
+          <!-- <label for="email">Usuario:</label>
           <input type="email" class="form-control" id="email" placeholder="" name="email"> -->
-        </div>
-        <div class="mb-7">
-          <!-- {{ form.email.label }}
-          {{ form.email(class='form-control') }} -->
-          <label for="email">Email:</label>
-          <input type="email" class="form-control" id="email" placeholder="" name="email">
         </div>
         <div class="mb-7">
           {{ form.password.label }}
@@ -50,11 +56,11 @@
         <br>
         {{ form.submit(class='form-control btn btn-danger') }}
         <!-- <button type="submit" class="mb-7 btn btn-danger" style="width: 100%;">Ingresar</button> -->
-        <!-- <div class="grupo">
+        <div class="grupo">
           {% if mensaje %}
               {{mensaje}}
           {% endif %}
-      </div> -->
+      </div>
       </form>
     </div>
 </body>

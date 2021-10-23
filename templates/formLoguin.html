@@ -2,12 +2,12 @@
 {% block contenido %}
     <div class="contenedor-l">
         <h3 style="text-align: center;">Iniciar sesion</h3>
-        <form id= "form-row" action="" method="post" novalidate>
+        <form id= "form-row" action="" method="POST" novalidate>
           {{ form.hidden_tag() }}
           <div class="mb-7">
-            {{ form.email.label }}
-            {{ form.email(class='form-control') }}
-            {% for error in form.email.errors %}
+            {{ form.usuario.label }}
+            {{ form.usuario(class='form-control') }}
+            {% for error in form.usuario.errors %}
             <span style="color: red;">{{ error }}</span>
             {% endfor %}
             <!-- <label for="email">Email:</label>
@@ -16,10 +16,17 @@
           <div class=div class="mb-7">
             {{ form.password.label }}
             {{ form.password(class='form-control') }}
+            {% for error in form.usuario.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
             <!-- <label for="pwd">Contraseña:</label>
             <input type="password" class="form-control" id="pwd" placeholder="" name="pwd"> -->
           </div>
           <br>
+          <!-- <div class=div class="mb-7">
+            {{ form.recordar() }} 
+            {{ form.recordar.label }}
+          <div> -->
           {{ form.submit(class='form-control btn btn-danger') }}
           <!-- <button type="submit" class="mb-7 btn btn-danger" style="width: 100%;">Ingresar</button> -->
           <div class="grupo">
@@ -29,9 +36,6 @@
         </div>
         </form>
       </div>
-      <br>
-      <br>
-      <br>
       <br>
       <br>
       <br>
