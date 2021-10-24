@@ -31,7 +31,7 @@ class addForm(FlaskForm):
     resena = TextAreaField('Reseña',validators=[DataRequired(message='Debe ingresar la reseña')])
     
     opcion = SelectField('Seleccione la Opcion', choices=[])
-    calificacion = IntegerField('Calificacion', validators=[DataRequired()])
+    calificacion = IntegerField('Calificacion', validators=[DataRequired(message='Debe ingresar la calificacion')])
     comentario = TextAreaField('Comentario',validators=[DataRequired(message='Debe ingresar Comentario')])
 
     dia = StringField('Dia',validators=[DataRequired(message='Debe ingresar el dia')])
