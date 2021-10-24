@@ -73,9 +73,6 @@
         box-shadow: none;
         border-radius: 2px;
       }
-    table.table .form-control.error {
-      border-color: #f50000;
-    }
     table.table td .add {
       display: none;
     }
@@ -130,7 +127,7 @@
           <div class="row">
               <div class="col-sm-8" ><h2></h2></div>
               <div class="col-sm-4">
-                <a href="/addComentario/{{ current_user.id }}" class="btn btn-success" data-toggle="modal" data-target="#mymodal"><i class="material-icons">&#xE147;</i> <span>Adicionar</span></a>
+                <a href="/addComen/" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar</span></a>
               </div>
           </div>
         </div>
@@ -153,15 +150,15 @@
                   <td>{{ d }}</td>
                    {% endfor %}     
                   <td>
-                    <a href="/editComentario/{{ current_user.nombre }}" class="edit" title="Edit" data-toggle="modal" data-target="#modaledit"><i class="material-icons">&#xE254;</i></a>
+                    <a href="/editComentario/{{l[0]}}" class="edit" title="Edit" data-toggle="modal" data-target="#modaledit{{l[0]}}"><i class="material-icons">&#xE254;</i></a>
                     <a href="/borraComentario/{{l[0]}}" class="delete" title="Delete" data-toggle="modal" onclick="return confirm('Esta Seguro de Borrar el Registro ?')"><i class="material-icons">&#xE872;</i></a>
                   </td>
               </tr>
   <!-- Formulario para Editar Comentarios -->
-	<div id="modaledit" class="modal fade">
+	<div id="modaledit{{l[0]}}" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form action="/editComentario/" method="POST">
+				<form action="{{url_for('editComentario')}}" method="POST">
 					<div class="modal-header">						
 						<h4 class="modal-title">Editar Comentario</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -193,40 +190,6 @@
 
       </table>
   </div>
-  <!-- Formulario para Ingresar Comentarios -->
-  <div id="mymodal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-       <div class="modal-content">
-          <div class="modal-header">
-             <h4 class="modal-title">Adicionar Comentario</h4>
-          </div>
-          <div class="modal-body">
-             <form action="{{url_for('addComentario')}}" method="POST">
-                <div class="form-group">
-                   <label>pelicula:</label>
-                   <input type="text" class="form-control" name="name" required="1">
-                </div>
-                 <div class="form-group">
-                   <label>calificacion:</label>
-                   <input type="email" class="form-control" name="email" required="1">
-                </div>
-                 <div class="form-group">
-                   <label>Comentario:</label>
-                   <textarea class="form-control" name="comentario" value="" required></textarea>
-                   <!-- <input type="number" class="form-control" name="phone" required="1"> -->
-                </div>
-                <div class="form-group">
-                   <button class="btn btn-primary" type="submit">Guardar Comentario</button>
-                </div>
-             </form>
-          </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            </div>
-       </div>
-    </div>
- </div>
-  
 </div>
 
 </body>

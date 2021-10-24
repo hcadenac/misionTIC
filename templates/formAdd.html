@@ -1,6 +1,17 @@
 {% extends 'formBase.html' %}
 {% block contenido %}
-
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissable" role="alert"> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="close"> 
+                <span aria-hidden="true" style="color: #ec0e20;">x</span> 
+            </button>
+        {{message}}
+        </div>
+      {% endfor %}
+  {% endif %}
+{% endwith %}
 <h3 style="text-align: center; color: rgb(233, 16, 16);">Hola , Esta adicionando registros de {{ nombre }} en la plataforma de Cinemark.</h3>
 <div class="contenedor-l" Style="width: 40%; margin-left: 423px;">
   <h3 style="text-align: center; color: rgb(233, 16, 16);">Adicionar Registro</h3>
@@ -77,13 +88,12 @@
         {{ form.capacidad.label }}
         {{ form.capacidad(class='form-control') }}
     {% else %}
-
-    <h1>NO ES POSIBLE ADICIONAR  INFORMACION DE USUARIOS</h1>
+    <h1>acceso incorrecto</h1>
     {% endif %}
     <br>
     <div class="row" style="display: flex; justify-content: center;">
       <div class="col-sm-6" >
-        <a href="/admin/{{ nombre }}" class=" btn btn-danger" style="display: block;">Cancelar</a>
+        <a href="/admin/{{ id }}" class=" btn btn-danger" style="display: block;">Cancelar</a>
       </div>
       <div class="col-sm-6" >
         {{ form.submit(class='form-control btn btn-danger') }}

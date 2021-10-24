@@ -29,6 +29,10 @@ class addForm(FlaskForm):
     clasificacion = StringField('Clasificacion', validators=[DataRequired(message='Debe ingresar la clasificacion')])
     estado = StringField('Estado',validators=[DataRequired(message='Debe ingresar el estado')])
     resena = TextAreaField('Reseña',validators=[DataRequired(message='Debe ingresar la reseña')])
+    
+    opcion = SelectField('Seleccione la Opcion', choices=[])
+    calificacion = IntegerField('Calificacion', validators=[DataRequired()])
+    comentario = TextAreaField('Comentario',validators=[DataRequired(message='Debe ingresar Comentario')])
 
     dia = StringField('Dia',validators=[DataRequired(message='Debe ingresar el dia')])
     hora_funcion = StringField('Hora de la Funcion',validators=[DataRequired(message='Debe ingresar la hora')])

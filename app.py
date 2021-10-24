@@ -304,8 +304,6 @@ def ventas(id):
     conn.close()
     if request.method == 'GET':
         if current_user.is_authenticated:
-        #usuario = current_user.nombre
-        #print(current_user.id)
             venta = Ventas(id_usuario=current_user.id, id_pelicula=id, num_boletas = 1)
             db.session.add(venta)
             db.session.commit()
@@ -336,7 +334,6 @@ def comentario():
         listaC = (db.session.query(Usuarios.usuario, Comentarios.calificacion, Comentarios.comentario)
                 .filter(Usuarios.id == Comentarios.id_usuario)
                 .filter(Comentarios.id_pelicula == id).all())
-        #print(listaC)
         return render_template('formComentario.html', datos=datos, lista=listaC)
     else:
         return render_template('formComentario.html', datos=datos)
@@ -349,7 +346,6 @@ def gestionComentario():
         listaC = (db.session.query(Comentarios.id, Peliculas.titulo, Comentarios.calificacion, Comentarios.comentario)
                 .filter(Peliculas.id == Comentarios.id_pelicula)
                 .filter(Comentarios.id_usuario == user).all())
-        #print(listaC)
         return render_template('formAdminUser.html', lista=listaC)
 
 ######## Editar Comentarios ##########
@@ -359,9 +355,6 @@ def editComentario():
         my_data = Comentarios.query.get(request.form['id'])
         my_data.calificacion = request.form['calificacion']
         my_data.comentario = request.form['comentario']
-        print(request.form['id'])
-        print(my_data.calificacion)
-        print(my_data.comentario)
         db.session.commit()
         flash("Comentario Actalizado Con Exito")
         user = current_user.id
@@ -385,15 +378,28 @@ def borraComentario(id):
     return redirect(url_for('gestionComentario'))
 
 ########## Adicionar Comentarios ############
-@app.route('/addComentario/', methods = ['GET', 'POST'])
-def addComentario():
-    dato = 11
-    listaP = (db.session.query(Peliculas.titulo)
-                .filter(Peliculas.id == Ventas.id_pelicula)
-                .filter(Ventas.id_usuario == dato).all())
-    print('Gonorrea')
-    print(listaP)
-    return redirect(url_for('gestionComentario'))
+@app.route('/addComen/', methods = ['GET', 'POST'])
+def addComen():
+    form = addForm() 
+    if request.method == 'GET':
+        print("gonorrea")
+        user = current_user.id
+        print(user)
+        listaP = (db.session.query(Peliculas.titulo)
+                 .filter(Peliculas.id == Ventas.id_pelicula)
+                 .filter(Ventas.id_usuario == user).all())
+        lista =[]
+        for l in listaP:
+            lista.append(l[0])
+            form.opcion.choices = [(row, row) for row in lista]
+        return render_template('formAddCom.html', form=form)
+    else:
+        peli= db.session.query(Peliculas.id).filter(Peliculas.titulo == request.form['opcion'])
+        mycomentario = Comentarios(id_usuario=current_user.id, id_pelicula= peli, calificacion=form.calificacion.data, comentario=form.comentario.data)
+        db.session.add(mycomentario)
+        db.session.commit()
+        flash("Comentario Adicionado con Exito")
+        return redirect(url_for('gestionComentario'))
 
 ##### funcion user loader######
 @login_manager.user_loader

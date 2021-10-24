@@ -1,0 +1,38 @@
+{% extends 'formBase.html' %}
+{% block contenido %}
+
+<h3 style="text-align: center; color: rgb(233, 16, 16);">Hola , en esta seccion puedes crear comentarios en la plataforma de Cinemark.</h3>
+<div class="contenedor-l" Style="width: 40%; margin-left: 423px;">
+  <h3 style="text-align: center; color: rgb(233, 16, 16);">Adicionar Comentario</h3>
+  <form id= "form-row" action="" method="post" novalidate>
+  {{ form.hidden_tag() }}
+    <div class="mb-7">
+      {{ form.opcion.label }}
+      {{ form.opcion(class='form-control') }}
+      <div class=div class="mb-7">
+        {{ form.calificacion.label }}
+        {{ form.calificacion(class='form-control') }}
+      </div>
+    </div>
+    <div class="mb-7">
+      {{ form.comentario.label }}
+      {{ form.comentario(class='form-control') }}
+    </div>
+   <br>
+    <div class="row" style="display: flex; justify-content: center;">
+      <div class="col-sm-6" >
+        <a href="/addComen/" class=" btn btn-danger" style="display: block;">Cancelar</a>
+      </div>
+      <div class="col-sm-6" >
+        {{ form.submit(class='form-control btn btn-danger') }}
+      </div>
+    </div>
+    <!-- <div class="grupo">
+      {% if mensaje %}
+          {{mensaje}}
+      {% endif %}
+    </div> -->
+  </form>
+  
+</div>
+{% endblock %}
