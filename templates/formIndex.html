@@ -2,49 +2,29 @@
   {% extends 'formBase.html' %}
 
   {% block contenido %}
+  <div id="logo1" style="text-align: center;">
+    <img src="/static/img/logocine.jpg" alt="">
+  </div>
+  
+  <h3 style="text-align: center; color: rgb(233, 16, 16);">Bienvenido a Colina-Cinemark</h3>
+  <h3 style="text-align: center; color: rgb(233, 16, 16);">Disfruta del mejor entretenimiento en nuestras salas</h3>
   <h2 id="text-titulo">PELICULAS DISPONIBLES EN NUESTRAS SALAS</h2>
     <br>
-    <div class="container">
-        <div class="row">
+    
+<div class="container">
+      <div class="row">
+          {% for l in lista %}
           <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-            <div class="card">
-                <img src="/static/img/pelicula1.jpg" alt="">
-                <h4>LA PATRULLA CANINA</h4>
-            </div>
-          </div>
-          <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-              <div class="card">
-                  <img src="/static/img/pelicula2.jpg" alt="">
-                  <h4>VIUDA NEGRA</h4>
+            <div class="card" style="border: 1px solid; color: darkblue; padding-left: 1px; padding-right: 1px;">
+              <h5 style="text-align: center; color: rgb(233, 16, 16);">{{ l[0] }}</h5>
+              <hr>
+                <img src="{{ l[3] }}" alt="">
+                <h5 style="text-align: center; color: rgb(233, 16, 16);">GENERO {{ l[1] }}</h5>
+                <h6 style="text-align: center; color: #000080;"> {{ l[4] }}</h6>
               </div>
-          </div>
-          <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-            <div class="card">
-                <img src="/static/img/pelicula3.jpg" alt="">
-                <h4>SHANGAI CHI</h4>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-              <div class="card">
-                  <img src="/static/img/pelicula4.jpg" alt="">
-                  <h4>MERCENARIO</h4>
-              </div>
-            </div>
-            <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-                <div class="card">
-                    <img src="/static/img/pelicula5.jpg" alt="">
-                    <h4>CACERIA JURASICA</h4>
-                </div>
-            </div>
-            <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-              <div class="card">
-                  <img src="/static/img/pelicula6.jpg" alt="">
-                  <h4>SCOOBY DOO</h4>
-              </div>
-            </div>
-          </div>
+          </div> 
+          {% endfor %}
+      </div>
           <br>
           <h2 id="text-titulo">PROXIMOS ESTRENOS...</h2>
           <div class="row">
@@ -67,6 +47,7 @@
               </div>
             </div>
           </div>
-        </div>
+</div>
+    
 </body>
 {% endblock %}

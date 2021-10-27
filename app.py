@@ -4,6 +4,7 @@ from sqlite3 import dbapi2
 from typing import Text
 
 from flask import Flask, flash, redirect, render_template, request, url_for
+from flask.scaffold import _matching_loader_thinks_module_is_package
 from flask_login import (LoginManager, current_user, login_required,
                          login_user, logout_user)
 from flask_sqlalchemy import SQLAlchemy
@@ -35,10 +36,20 @@ from models import (Comentarios, Funciones, Horarios, Peliculas, Salas,
                     Usuarios, Ventas)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/index/', methods=['GET', 'POST'])
 def index():
-    return render_template('formIndex.html')
+    if request.method == "GET":
+        pelicula = (db.session.query(Peliculas.titulo, Peliculas.genero, Peliculas.resena, Peliculas.imagen, Peliculas.resena)
+                    
+                    .filter(Peliculas.estado == 'PROYECCION').all())
+        lista =[]
+        for p in pelicula:
+            lista.append(p)
+            print(lista)
 
+        return render_template('formIndex.html', lista=lista)
+
+#####pagina de login de usuarios a la plataforma##### 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -60,6 +71,7 @@ def login():
                 return render_template('formloguin.html', mensaje="    Usuario o contraseña Invalido.", form=LoginForm())#return redirect(url_for('index'))
     return render_template('formloguin.html', form=form) 
 
+######Registro de usuarios en la plataforma######
 @app.route('/registro/', methods=['GET', 'POST'])
 def registro():
     form= RegistroForm()
@@ -76,12 +88,13 @@ def registro():
             return redirect(url_for('login'))
     return render_template('formRegistro.html', form=form)
 
-
+#######logout de la plataforma##########
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
+#####pagina de administrador de la plataforma##########
 @app.route('/admin/<string:id>', methods=['GET', 'POST'])
 def admin(id):
     form= gestionForm()
@@ -104,7 +117,7 @@ def admin(id):
 def adminuser():
     return render_template('formadmin.html')
 
-##adicionar datos#####
+##adicionar regitros en las tablas de la base de datos#####
 @app.route('/add/<string:id>', methods = ['GET', 'POST'])
 def addOpcion(id):
     nombre = id 
@@ -139,7 +152,8 @@ def addOpcion(id):
             return redirect(url_for('admin', id='peliculas'))
     else:
         return render_template('formAdd.html', nombre= nombre, form=form)
-  
+
+####adicionar datos################
 @app.route('/add', methods = ['GET', 'POST'])
 def add():
     form= addForm()
@@ -264,6 +278,7 @@ def update(dato):
     else:
         return render_template('formAdmin.html', nombre='peliculas', form=form)
 
+#######consulta de funciones y peliculas  de los usuarios#############
 @app.route('/usuario', methods = ['GET', 'POST'])
 def usuario():
     conn = get_db_connection()
@@ -290,12 +305,8 @@ def usuario():
             return render_template('formUsuario.html', datos=datos)
         else:
             return render_template('formUsuario.html', datos=datos, lista=my_data, nombre=titulo)
-        #my_data.phone = request.form['phone']
-            
 
-    #texto = 'todos son unas gonorreas'
-    #return render_template('formUsuario.html')
-
+###########Guardar la venta de tiquetes#########
 @app.route('/ventas/<id>',  methods = ['GET', 'POST'])
 def ventas(id):
     #print(id)
@@ -313,13 +324,68 @@ def ventas(id):
             return redirect(url_for('login')) 
         return render_template('formUsuario.html', datos=datos)
 
-@app.route('/cartelera/')
-def cartelera():
-    return render_template('formIndex.html')
+####### muestra la reseña de la pelicula ##############
+@app.route('/resena/<string:texto>', methods = ['GET', 'POST'])
+def resena(texto):
+    resena = texto
+    return render_template('formIndex.html', texto=resena)
 
-@app.route('/funciones/')
+@app.route('/funciones/', methods = ['GET', 'POST'])
 def funciones():
-    return render_template('formFunciones.html')
+    if request.method == 'GET':
+        listaP1 = (db.session.query(Peliculas.titulo, Peliculas.imagen)
+                .filter(Funciones.id_horario == Horarios.id_horario)
+                .filter(Funciones.id_pelicula == Peliculas.id)
+                .filter(Horarios.dia == 'SABADO').distinct().all())
+        #mylista =[('EL ULTIMO MERCENARIO','/static/img/pelicula4.jpg',('14:00','17:00','19:00','21:00')),('LA GONORREA SHANGAI','/static/img/pelicula3.jpg',('16:00','17:00','19:00','21:00'),('14:00','18:00'))]
+        lista4=[]
+        newlist = []
+        for j in listaP1:
+            for y in j:
+                newlist.append(y)
+        z=2
+        output2=[newlist[i:i + z] for i in range(0, len(newlist), z)]        
+        for x in output2:
+            s1 = (db.session.query(Horarios.hora_fun)
+                .filter(Funciones.id_horario == Horarios.id_horario)
+                .filter(Funciones.id_pelicula == Peliculas.id)
+                .filter(Peliculas.titulo == x[0])
+                .filter(Horarios.dia == 'SABADO').all())
+            lista4.append(x)
+            lista4.append(s1)
+            #newlist1.append(lista4,)
+        n= 2
+        output=[lista4[i:i + n] for i in range(0, len(lista4), n)]
+    
+        return render_template('formFunciones.html', listaF=output)
+    elif request.method == 'POST':
+        dia = request.form['dia']
+        listaP1 = (db.session.query(Peliculas.titulo, Peliculas.imagen)
+                .filter(Funciones.id_horario == Horarios.id_horario)
+                .filter(Funciones.id_pelicula == Peliculas.id)
+                .filter(Horarios.dia == dia).distinct().all())
+        #mylista =[('EL ULTIMO MERCENARIO','/static/img/pelicula4.jpg',('14:00','17:00','19:00','21:00')),('LA GONORREA SHANGAI','/static/img/pelicula3.jpg',('16:00','17:00','19:00','21:00'),('14:00','18:00'))]
+        lista4=[]
+        newlist = []
+        for j in listaP1:
+            for y in j:
+                newlist.append(y)
+        z=2
+        output2=[newlist[i:i + z] for i in range(0, len(newlist), z)]
+        #newlist1= []
+        for x in output2:
+            s1 = (db.session.query(Horarios.hora_fun)
+                .filter(Funciones.id_horario == Horarios.id_horario)
+                .filter(Funciones.id_pelicula == Peliculas.id)
+                .filter(Peliculas.titulo == x[0])
+                .filter(Horarios.dia == dia).all())
+            lista4.append(x)
+            lista4.append(s1)
+            #newlist1.append(lista4,)
+        print('la lista')
+        n= 2
+        output=[lista4[i:i + n] for i in range(0, len(lista4), n)]
+        return render_template('formFunciones.html', dia=dia, listaF=output)
 
 ##### Consulta de Comentarios  ###############
 @app.route('/comentario/', methods = ['GET', 'POST'])
@@ -362,9 +428,6 @@ def editComentario():
                 .filter(Peliculas.id == Comentarios.id_pelicula)
                 .filter(Comentarios.id_usuario == user).all())
         return render_template('formAdminUser.html', lista=listaC)
-        
-        #return render_template('formAdminUser.html')
-        #return redirect(url_for('gestionComentario'))
     else:
         return render_template('formAdminUser.html')
 
@@ -382,7 +445,6 @@ def borraComentario(id):
 def addComen():
     form = addForm() 
     if request.method == 'GET':
-        print("gonorrea")
         user = current_user.id
         print(user)
         listaP = (db.session.query(Peliculas.titulo)

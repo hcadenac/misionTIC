@@ -1,225 +1,88 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="estilosCine.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
-    <title>Document</title> --> 
-    {% extends 'formBase.html' %}
+{% extends 'formBase.html' %}
+    
 {% block contenido %}
-    <style>
-      /* Style the tab */
-      .tab {
-        overflow: hidden;
-        border: 1px solid #ccc;
-        background-color: #f1f1f1;
-      }
-      
-      /* Style the buttons that are used to open the tab content */
-      .tab button {
-        background-color: inherit;
-        float: left;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 14px 16px;
-        transition: 0.3s;
-      }
-      
-      /* Change background color of buttons on hover */
-      .tab button:hover {
-        background-color: #ddd;
-      }
-      
-      /* Create an active/current tablink class */
-      .tab button.active {
-        background-color: #ccc;
-      }
-      
-      /* Style the tab content */
-      .tabcontent {
-        display: none;
-        padding: 6px 12px;
-        border: 1px solid #ccc;
-        border-top: none;
-      }
-        .fila{
-            color: red;
-            border: 1px solid;
-            border-color: rgba(193, 197, 201, 0.815);
-        }
-        .form-group{
-            border: 1px solid;
-            border-color: darkgrey;
-            
-        }
-      .row{
-       
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        /* align-items: center; */
-        padding-right: 20px;
-        padding-left: 20px;
-        
-      }
-      .card{
+<head>
+<style>
+    .container-f{
+      margin-top: 20px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center; 
+      height: 0 auto;
+      line-height: 31px; /*--Vertically aligns the text within the tab--*/
+      border: 1px solid rgba(70, 64, 124, 0.521);
+      width: 50%;
+ 
+    
+    }
+    .fila{
+        color: rgba(202, 8, 8, 0.938);
         border: 1px solid;
-        border-color: rgb(16, 19, 185);
-        justify-content: center;
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-      
+        border-color: rgba(193, 197, 201, 0.815);
+        width: 200px;
+        text-align: center;
+        padding: auto;
+    }
+    a{
+        margin: 2px;
+    }
     </style>
-      </style>
-      <script>
-          function openCity(evt, cityName) {
-        // Declare all variables
-        var i, tabcontent, tablinks;
-      
-        // Get all elements with class="tabcontent" and hide them
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-          tabcontent[i].style.display = "none";
-        }
-      
-        // Get all elements with class="tablinks" and remove the class "active"
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-          tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-      
-        // Show the current tab, and add an "active" class to the button that opened the tab
-        document.getElementById(cityName).style.display = "block";
-        evt.currentTarget.className += " active";
-      }
-      </script>
 </head>
 <body>
-  <div class="tab">
-    <button class="tablinks" onclick="openCity(event, 'lunes')">LUNES</button>
-    <button class="tablinks" onclick="openCity(event, 'martes')">MARTES</button>
-    <button class="tablinks" onclick="openCity(event, 'miercoles')">MIERCOLES</button>
-    <button class="tablinks" onclick="openCity(event, 'jueves')">JUEVES</button>
-    <button class="tablinks" onclick="openCity(event, 'viernes')">VIERNES</button>
-    <button class="tablinks" onclick="openCity(event, 'sabado')">SABADO</button>
-    <button class="tablinks" onclick="openCity(event, 'domingo')">DOMINGO</button>
-  </div>
-  
-  <!-- Tab content -->
-<div id="lunes" class="tabcontent">
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-        <div class="card">
-          <h4>LA PATRULLA CANINA</h4>
-            <img src="/static/img/pelicula1.jpg" alt="">
-            <h4>Sala: Gold</h4>
-            <h4>Hora: 14:00</h4>
-        </div>
-      </div>
-      <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-          <div class="card">
-            <h4>VIUDA NEGRA</h4>
-              <img src="/static/img/pelicula2.jpg" alt="">
-              <h4>Sala: Gold</h4>
-              <h4>Hora: 14:00</h4>
-          </div>
-      </div>
-      <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-        <div class="card">
-          <h4>SHANGAI CHI</h4>
-            <img src="/static/img/pelicula3.jpg" alt="">
-            <h4>Sala: Gold</h4>
-            <h4>Hora: 14:00</h4>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-          <div class="card">
-            <h4>MERCENARIO</h4>
-              <img src="/static/img/pelicula4.jpg" alt="">
-              <h4>Sala: Gold</h4>
-              <h4>Hora: 14:00</h4>  
-          </div>
-        </div>
-        <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-            <div class="card">
-              <h4>CACERIA JURASICA</h4>
-                <img src="/static/img/pelicula5.jpg" alt="">
-                <h4>Sala: Gold</h4>
-               <h4>Hora: 14:00</h4>  
-            </div>
-        </div>
-        <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-          <div class="card">
-            <h4>SCOOBY DOO</h4>
-              <img src="/static/img/pelicula6.jpg" alt="">
-              <h4>Sala: Gold</h4>
-              <h4>Hora: 14:00</h4>               
-          </div>
-        </div>
-      </div>
-  </div>
-    
-</div>
-  
-  <div id="martes" class="tabcontent">
-      <div class="row">
-          <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-            <div class="card">
-              <h4>MERCENARIO</h4>
-                <img src="/static/img/pelicula4.jpg" alt="">
-                <h4>Sala: Gold</h4>
-                <h4>Hora: 14:00</h4>       
-               
-            </div>
-          </div>
-          <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-              <div class="card">
-                <h4>CACERIA JURASICA</h4>
-                  <img src="/static/img/pelicula5.jpg" alt="">
-                  <h4>Sala: Gold</h4>
-                  <h4>Hora: 14:00</h4>     
-              </div>
-          </div>
-          <div class="col-xs-10 col-sm-6 col-md-4 pelicula">
-            <div class="card">
-              <h4>SCOOBY DOO</h4>
-                <img src="/static/img/pelicula6.jpg" alt="">
-                <h4>Sala: Gold</h4>
-                <h4>Hora: 14:00</h4>     
-            </div>
-          </div>
-        </div>
-    </div>
-      
-  </div>
-  
-  <div id="miercoles" class="tabcontent"> 
-    <h4>EN CONSTRUCCION...</h4>
-  </div>
-  <div id="jueves" class="tabcontent"> 
-    <h4>EN CONSTRUCCION...</h4>
-  </div>
-  <div id="viernes" class="tabcontent"> 
-    <h4>EN CONSTRUCCION...</h4>
-  </div>
-  <div id="sabado" class="tabcontent">
-    <h4>EN CONSTRUCCION...</h4>
-  </div>
-  <div id="domingo" class="tabcontent">
-    <h4>EN CONSTRUCCION...</h4>
-  </div>
+    <h3 style="text-align: center; color: rgb(233, 16, 16);">Bienvenido a Cinemark</h3>
+    <h3 style="text-align: center; color: rgb(233, 16, 16);">En esta pagina podras consultar los horarios de nuestras funciones</h3>
+<div class="container-f">
+    <form id= "form-row" class="col-5 mx-auto border" style="margin-left: 13px;" method="POST">
+        <div class="form-row" >
+        <div class="form-group col-md-12">
+            <label for="inputapellido">Seleccione el Dia</label>
+            <select class="form-control" id="sel1" name ="dia">
+                <option>LUNES</option>
+                <option>MARTES</option>
+                <option>MIERCOLES</option>
+                <option>JUEVES</option>
+                <option>VIERNES</option>
+                <option>SABADO</option>
+                <option>DOMINGO</option>
+            </select>
 
+            <button type="submit" class="btn btn-success" style="margin-top: 35px;  width: 100%;">Consultar</button>
+        </div>
+    </div>
+    </form>
+</div>
+<br>
+<h3 style="text-align: center; color: rgb(226, 10, 10);">PPROGRAMACION DISPONIBLE PARA EL DIA {{ dia }}</h3>
+{% for p in listaF %}
+<div class="container-tabla">
+    <table style="border-collapse: separate; border: rgb(69, 8, 236) 1px solid; height: 40px; margin: 0 auto; table-layout: fixed;">
+    <tr>
+            <th class="fila" colspan="2" style="background-color: rgba(22, 91, 180, 0.61);">{{ p[0][0] }} </th> 
+    </tr>
+        <tr>
+        <td rowspan="3" style="border: rgb(211, 7, 34) 2px solid"><IMG SRC="{{ p[0][1] }}" ALT="imagen pelicula 1" width="200" height="250"></td>
+        <td  class="fila" colspan="2" style="width:300px">HORARIOS DISPONIBLES</td>
+    </tr>
+   
+    <tr>
+        
+        <!-- <td class="fila" style="text-align: center;  width: 300px;">{% for l in p[2] %} <a class="btn btn-success" style="padding-right:  20px;">{{ l }}</a>{% endfor %}</td> -->
+        <td class="fila" style="text-align: center;  width: 300px;">{% for l in p[1] %} <a class="btn btn-success" style="padding-right:  20px;">{{ l[0] }}</a>{% endfor %}</td>
+        <!-- <td class="fila" style="text-align: center;  width: 300px;"><a class="btn btn-success" >14:00</a><a class="btn btn-success" >18:00</a><a class="btn btn-success" >14:00</a><a class="btn btn-success" >21:00</a></td> -->
+        <!-- <td class="fila">SALA CONTINENTAL</td> -->
+       
+    </tr> 
+    <tr>
+        <td class="fila" colspan="2" style="text-align: center; width: 300px;">SUBTITULADA - 2D</td> 
+    </tr>
+    </table>  
+    <br>
+</div>
+
+{% endfor %}
 </body>
+
+
 {% endblock %}

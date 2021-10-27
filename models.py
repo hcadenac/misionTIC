@@ -36,19 +36,10 @@ class Peliculas(db.Model):
     clasificacion = db.Column(db.String(20))
     estado = db.Column(db.String(11))
     resena = db.Column(db.String())
+    imagen = db.Column(db.String(28))
 
     def __repr__(self):
         return '<Peliculas {}>'.format(self.id)
-
-class Funciones(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    id_sala = db.Column(db.Integer(), db.ForeignKey('salas.id'))
-    id_horario = db.Column(db.Integer(), db.ForeignKey('horarios.id_horario'))
-    id_pelicula = db.Column(db.Integer(), db.ForeignKey('peliculas.id'))
-    valor = db.Column(db.Integer())
-
-    def __repr__(self):
-        return '<Funciones {}>'.format(self.id)
 
 class Horarios(db.Model):
     id_horario = db.Column(db.String(12), primary_key=True)
@@ -67,12 +58,27 @@ class Salas(db.Model):
         self.nombre = nombre
         self.capacidad = capacidad
 
+class Funciones(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    id_sala = db.Column(db.Integer(), db.ForeignKey('salas.id'))
+    id_horario = db.Column(db.Integer(), db.ForeignKey('horarios.id_horario'))
+    id_pelicula = db.Column(db.Integer(), db.ForeignKey('peliculas.id'))
+    valor = db.Column(db.Integer())
+    pelicula = db.relationship(Peliculas)
+    horarios = db.relationship(Horarios)
+    salas = db.relationship(Salas)
+
+    def __repr__(self):
+        return '<Funciones {}>'.format(self.id)
+
 class Comentarios(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     id_usuario = db.Column(db.Integer(), db.ForeignKey('usuarios.id'))
     id_pelicula = db.Column(db.Integer(), db.ForeignKey('peliculas.id'))
     calificacion = db.Column(db.Integer(), nullable=False)
     comentario = db.Column(db.String(128))
+    usuario = db.relationship(Usuarios)
+    pelicula = db.relationship(Peliculas)
 
     def __repr__(self):
         return '<Comentarios {}>'.format(self.id_usuario)
@@ -82,7 +88,8 @@ class Ventas(db.Model):
     id_usuario = db.Column(db.Integer(), db.ForeignKey('usuarios.id'))
     id_pelicula = db.Column(db.Integer(), db.ForeignKey('peliculas.id'))
     num_boletas = db.Column(db.Integer(), nullable=False)
-    #total_venta = db.Column(db.Integer(), nullable=False)
+    pelicula = db.relationship(Peliculas)
+    usuurio = db.relationship(Usuarios)
 
     def __repr__(self):
         return '<Comentarios {}>'.format(self.id_usuario)
