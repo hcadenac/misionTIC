@@ -3,6 +3,7 @@ import sqlite3
 from sqlite3 import dbapi2
 from typing import Text
 
+#import flask_login
 from flask import Flask, flash, redirect, render_template, request, url_for
 from flask.scaffold import _matching_loader_thinks_module_is_package
 from flask_login import (LoginManager, current_user, login_required,
@@ -11,7 +12,6 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.exceptions import abort
 from wtforms.validators import Email
 
-import db
 #from app import app
 from forms import LoginForm, RegistroForm, addForm, gestionForm
 
@@ -28,7 +28,7 @@ DEBUG = True
 app.config['SQLALCHEMY_DATABASE_URI']  = 'sqlite:///cinema.db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 login_manager = LoginManager(app)
-#login_manager.login_view = "login"
+login_manager.login_view = "login"
 login_manager.init_app(app)
 db = SQLAlchemy(app)
 
@@ -36,16 +36,16 @@ from models import (Comentarios, Funciones, Horarios, Peliculas, Salas,
                     Usuarios, Ventas)
 
 
-@app.route('/index/', methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == "GET":
-        pelicula = (db.session.query(Peliculas.titulo, Peliculas.genero, Peliculas.resena, Peliculas.imagen, Peliculas.resena)
+        pelicula = (db.session.query(Peliculas.titulo, Peliculas.genero,Peliculas.imagen, Peliculas.resena)
                     
                     .filter(Peliculas.estado == 'PROYECCION').all())
         lista =[]
         for p in pelicula:
             lista.append(p)
-            print(lista)
+            #print(lista)
 
         return render_template('formIndex.html', lista=lista)
 
@@ -68,8 +68,8 @@ def login():
                 else:
                     return redirect(url_for('admin', id='peliculas'))
             else:
-                return render_template('formloguin.html', mensaje="    Usuario o contraseña Invalido.", form=LoginForm())#return redirect(url_for('index'))
-    return render_template('formloguin.html', form=form) 
+                return render_template('formLoguin.html', mensaje="    Usuario o contraseña Invalido.", form=LoginForm())
+    return render_template('formLoguin.html', form=form) 
 
 ######Registro de usuarios en la plataforma######
 @app.route('/registro/', methods=['GET', 'POST'])
@@ -153,7 +153,7 @@ def addOpcion(id):
     else:
         return render_template('formAdd.html', nombre= nombre, form=form)
 
-####adicionar datos################
+#### adicionar datos ################
 @app.route('/add', methods = ['GET', 'POST'])
 def add():
     form= addForm()
@@ -253,7 +253,6 @@ def update(dato):
             nombre = 'funciones'
             return render_template('formEdit.html', nombre=nombre, dato1=datos.id_sala, dato2=datos.id_horario, dato3=datos.id_pelicula, dato4=datos.valor, form=form)
         elif request.method == "POST":
-            #my_data = Peliculas.query.get(lista[1])
             datos.nombre=form.id_sala.data
             datos.usuario = form.id_horario.data
             datos.tipo=form.id_pelicula.data
@@ -262,13 +261,11 @@ def update(dato):
             flash("..Registro Editado con Exito..")
             return redirect(url_for('admin', id='funciones'))   
     elif (lista[0] == 'horarios'):
-        #form= RegistroForm()
         datos = Horarios.query.get(lista[1])
         if request.method == "GET": 
             nombre = 'horarios'
             return render_template('formEdit.html', nombre=nombre, dato1=datos.id_horario, dato2=datos.dia, dato3=datos.hora_fun, form=form)
         elif request.method == "POST":
-            #my_data = Peliculas.query.get(lista[1])
             datos.id_horario=form.id_horario.data
             datos.dia = form.dia.data
             datos.hora_fun=form.hora_funcion.data
@@ -289,17 +286,15 @@ def usuario():
     elif request.method == 'POST':
         titulo = request.form['pelicula']
         listaP = db.session.query(Peliculas.id ).filter(Peliculas.titulo ==titulo).all()
-        #print(listaP[0][0])
         id =(listaP[0][0]) #my_data.email = request.form['email']
         dia = request.form['dia']
-        #print(dia)
+
         my_data = (db.session.query(Peliculas.id, Peliculas.titulo, Horarios.dia, Horarios.hora_fun, Salas.nombre, Funciones.valor)
                 .filter(Peliculas.id == Funciones.id_pelicula)
                 .filter(Funciones.id_horario == Horarios.id_horario)
                 .filter(Funciones.id_sala == Salas.id)
                 .filter(Horarios.dia == dia)
                 .filter(Peliculas.id == id).all())
-        #print(my_data[0][0])
         if (len(my_data) == 0):
             flash("La consulta no encontro registros disponibles")
             return render_template('formUsuario.html', datos=datos)
@@ -309,7 +304,6 @@ def usuario():
 ###########Guardar la venta de tiquetes#########
 @app.route('/ventas/<id>',  methods = ['GET', 'POST'])
 def ventas(id):
-    #print(id)
     conn = get_db_connection()
     datos = conn.execute('SELECT titulo FROM peliculas').fetchall()
     conn.close()
@@ -353,7 +347,6 @@ def funciones():
                 .filter(Horarios.dia == 'SABADO').all())
             lista4.append(x)
             lista4.append(s1)
-            #newlist1.append(lista4,)
         n= 2
         output=[lista4[i:i + n] for i in range(0, len(lista4), n)]
     
@@ -372,7 +365,6 @@ def funciones():
                 newlist.append(y)
         z=2
         output2=[newlist[i:i + z] for i in range(0, len(newlist), z)]
-        #newlist1= []
         for x in output2:
             s1 = (db.session.query(Horarios.hora_fun)
                 .filter(Funciones.id_horario == Horarios.id_horario)
@@ -381,8 +373,6 @@ def funciones():
                 .filter(Horarios.dia == dia).all())
             lista4.append(x)
             lista4.append(s1)
-            #newlist1.append(lista4,)
-        print('la lista')
         n= 2
         output=[lista4[i:i + n] for i in range(0, len(lista4), n)]
         return render_template('formFunciones.html', dia=dia, listaF=output)
@@ -470,3 +460,6 @@ def get_user(user_id):
         return Usuarios.query.get(int(user_id))
     except:
         return None
+
+if __name__ =='main':
+    app.run(debug=True)

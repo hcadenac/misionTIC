@@ -1,4 +1,6 @@
+
 from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash as checkph
 from werkzeug.security import generate_password_hash as genph
 
@@ -25,7 +27,6 @@ class Usuarios(db.Model, UserMixin):
            return (self.id)
 
     def load_user(user_id):
-    #return Usuarios.query.filter_by(usuario=usuario).first()
         return Usuarios.get_by_id(int(user_id))
 
 class Peliculas(db.Model):
@@ -81,7 +82,7 @@ class Comentarios(db.Model):
     pelicula = db.relationship(Peliculas)
 
     def __repr__(self):
-        return '<Comentarios {}>'.format(self.id_usuario)
+        return '<Comentarios {}>'.format(self.id)
 
 class Ventas(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -92,29 +93,4 @@ class Ventas(db.Model):
     usuurio = db.relationship(Usuarios)
 
     def __repr__(self):
-        return '<Comentarios {}>'.format(self.id_usuario)
-
-
-
-
-#####Clase para manejar los usuarios
-""" class Usuario():
-    nombre=''
-    usuario=''
-    password=''
-    tipo=''
-
-    def __init__(self, pnombre, pusuario, ppassword): 
-        self.nombre = pnombre
-        self.usuario = pusuario
-        self.password = ppassword
-    
-    #Metodo para verificar el usuario contra la base de datos
-    def autenticar(self):
-        sql = "SELECT * FROM usuarios WHERE usuario = ? AND password = ?;"
-        obj = db.ejecutar_select(sql, [self.usuario, self.password])
-        if obj:
-            if len(obj) >0:
-                return True
-        return False """
-#################################
+        return '<Comentarios {}>'.format(self.id)
