@@ -9,6 +9,7 @@ from flask.scaffold import _matching_loader_thinks_module_is_package
 from flask_login import (LoginManager, current_user, login_required,
                          login_user, logout_user)
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from werkzeug.exceptions import abort
 from wtforms.validators import Email
 
@@ -40,7 +41,6 @@ from models import (Comentarios, Funciones, Horarios, Peliculas, Salas,
 def index():
     if request.method == "GET":
         pelicula = (db.session.query(Peliculas.titulo, Peliculas.genero,Peliculas.imagen, Peliculas.resena)
-                    
                     .filter(Peliculas.estado == 'PROYECCION').all())
         lista =[]
         for p in pelicula:
@@ -97,21 +97,24 @@ def logout():
 #####pagina de administrador de la plataforma##########
 @app.route('/admin/<string:id>', methods=['GET', 'POST'])
 def admin(id):
-    form= gestionForm()
-    conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM '+id).fetchall()
-    conn.close()
-    nombre = id
-    if request.method == 'POST':
-        opcion = form.opcion.data
+    if current_user.is_authenticated:
+        form= gestionForm()
         conn = get_db_connection()
-        posts = conn.execute('SELECT * FROM '+opcion).fetchall()
+        posts = conn.execute('SELECT * FROM '+id).fetchall()
         conn.close()
-        nombre= opcion
-        return render_template('formadmin.html', posts=posts, nombre=nombre, form=form)
+        nombre = id
+        if request.method == 'POST':
+            opcion = form.opcion.data
+            conn = get_db_connection()
+            posts = conn.execute('SELECT * FROM '+opcion).fetchall()
+            conn.close()
+            nombre= opcion
+            return render_template('formadmin.html', posts=posts, nombre=nombre, form=form)
+        else:
+            return render_template('formadmin.html', posts=posts, nombre=nombre, form=form)
     else:
-        return render_template('formadmin.html', posts=posts, nombre=nombre, form=form)
-
+        flash("El usuario no esta autenticado en la plataforma")
+        return redirect(url_for('login')) 
         
 @app.route('/admin/')
 def adminuser():
@@ -122,36 +125,56 @@ def adminuser():
 def addOpcion(id):
     nombre = id 
     form= addForm()
-    if request.method == 'POST':
-        if (id == 'peliculas'):
-            pelicula = Peliculas(titulo=form.titulo.data, genero=form.genero.data, duracion=form.duracion.data, clasificacion=form.clasificacion.data, estado=form.estado.data, resena=form.resena.data)
-            db.session.add(pelicula)
-            db.session.commit()
-            flash("...Registro Ingresado con Exito...")
-            return redirect(url_for('admin', id='peliculas'))
-        elif(id == 'horarios'):
-            horario = Horarios(id_horario=form.id_horario.data, dia=form.dia.data, hora_fun=form.hora_funcion.data)
-            db.session.add(horario)
-            db.session.commit()
-            flash("...Registro Ingresado con Exito...")
-            return redirect(url_for('admin', id='horarios'))
-        elif(id == 'funciones'):
-            funcion = Funciones(id_sala=form.id_sala.data, id_horario=form.id_horario.data, id_pelicula=form.id_pelicula.data, valor=form.valor.data)
-            db.session.add(funcion)
-            db.session.commit()
-            flash("...Registro Ingresado con Exito...")
-            return redirect(url_for('admin', id='funciones'))
-        elif(id == 'salas'):
-            sala = Salas(nombre=form.nombre_sala.data, capacidad=form.capacidad.data)
-            db.session.add(sala)
-            db.session.commit()
-            flash("...Registro Ingresado con Exito...")
-            return redirect(url_for('admin', id='salas'))
-
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            if form.validate_on_submit():
+                if (id == 'peliculas'):
+                    pelicula = Peliculas(titulo=form.titulo.data, genero=form.genero.data, duracion=form.duracion.data, clasificacion=form.clasificacion.data, estado=form.estado.data, resena=form.resena.data)
+                    db.session.add(pelicula)
+                    db.session.commit()
+                    flash("...Registro Ingresado con Exito...")
+                    return redirect(url_for('admin', id='peliculas'))
+                else:
+                    flash("...el formulario no esta completo, por favor diligencie completamente la informacion..")
+                    return redirect(url_for('admin', id='peliculas'))
+            elif(id == 'horarios'):
+                if form.validate_on_submit():
+                    horario = Horarios(id_horario=form.id_horario.data, dia=form.dia.data, hora_fun=form.hora_funcion.data)
+                    db.session.add(horario)
+                    db.session.commit()
+                    flash("...Registro Ingresado con Exito...")
+                    return redirect(url_for('admin', id='horarios'))
+                else:
+                    flash("...el formulario no esta completo, por favor diligencie completamente la informacion..")
+                    return redirect(url_for('admin', id='horarios'))
+            elif(id == 'funciones'):
+                if form.validate_on_submit():
+                    funcion = Funciones(id_sala=form.id_sala.data, id_horario=form.id_horario.data, id_pelicula=form.id_pelicula.data, valor=form.valor.data)
+                    db.session.add(funcion)
+                    db.session.commit()
+                    flash("...Registro Ingresado con Exito...")
+                    return redirect(url_for('admin', id='funciones'))
+                else:
+                    flash("...el formulario no esta completo, por favor diligencie completamente la informacion..")
+                    return redirect(url_for('admin', id='funciones'))
+            elif(id == 'salas'):
+                if form.validate_on_submit():
+                    sala = Salas(nombre=form.nombre_sala.data, capacidad=form.capacidad.data)
+                    db.session.add(sala)
+                    db.session.commit()
+                    flash("...Registro Ingresado con Exito...")
+                    return redirect(url_for('admin', id='salas'))
+                else:
+                    flash("...el formulario no esta completo, por favor diligencie completamente la informacion..")     
+            else:
+                return redirect(url_for('admin', id='peliculas'))
+        elif(id == 'usuarios'):
+            return redirect(url_for('registro'))
         else:
-            return redirect(url_for('admin', id='peliculas'))
+            return render_template('formAdd.html', nombre= nombre, form=form)
     else:
-        return render_template('formAdd.html', nombre= nombre, form=form)
+        flash("El usuario no esta autenticado en la plataforma")
+        return redirect(url_for('login')) 
 
 #### adicionar datos ################
 @app.route('/add', methods = ['GET', 'POST'])
@@ -169,36 +192,40 @@ def add():
 @app.route('/delete/<id>/', methods = ['GET', 'POST'])
 def delete(id):
     lista = id.split(" ")
-    if (lista[0] == 'peliculas'):
-        datos = Peliculas.query.get(lista[1])
-        db.session.delete(datos)
-        db.session.commit()
-        flash("..Registro Borrado con Exito...")
-        return redirect(url_for('admin', id='peliculas'))
-    elif (lista[0] == 'usuarios'):
-        datos = Usuarios.query.get(lista[1])
-        db.session.delete(datos)
-        db.session.commit()
-        flash("..Registro Borrado con Exito")
-        return redirect(url_for('admin', id='usuarios'))
-    elif (lista[0] == 'funciones'):
-        datos = Funciones.query.get(lista[1])
-        db.session.delete(datos)
-        db.session.commit()
-        flash("..Registro Borrado con Exito")
-        return redirect(url_for('admin', id='funciones'))
-    elif (lista[0] == 'horarios'):
-        datos = Horarios.query.get(lista[1])
-        db.session.delete(datos)
-        db.session.commit()
-        flash("..Registro Borrado con Exito")
-        return redirect(url_for('admin', id='horarios'))
-    elif (lista[0] == 'salas'):
-        datos = Salas.query.get(lista[1])
-        db.session.delete(datos)
-        db.session.commit()
-        flash("..Registro Borrado con Exito")
-        return redirect(url_for('admin', id='salas'))
+    if current_user.is_authenticated:
+        if (lista[0] == 'peliculas'):
+            datos = Peliculas.query.get(lista[1])
+            db.session.delete(datos)
+            db.session.commit()
+            flash("..Registro Borrado con Exito...")
+            return redirect(url_for('admin', id='peliculas'))
+        elif (lista[0] == 'usuarios'):
+            datos = Usuarios.query.get(lista[1])
+            db.session.delete(datos)
+            db.session.commit()
+            flash("..Registro Borrado con Exito")
+            return redirect(url_for('admin', id='usuarios'))
+        elif (lista[0] == 'funciones'):
+            datos = Funciones.query.get(lista[1])
+            db.session.delete(datos)
+            db.session.commit()
+            flash("..Registro Borrado con Exito")
+            return redirect(url_for('admin', id='funciones'))
+        elif (lista[0] == 'horarios'):
+            datos = Horarios.query.get(lista[1])
+            db.session.delete(datos)
+            db.session.commit()
+            flash("..Registro Borrado con Exito")
+            return redirect(url_for('admin', id='horarios'))
+        elif (lista[0] == 'salas'):
+            datos = Salas.query.get(lista[1])
+            db.session.delete(datos)
+            db.session.commit()
+            flash("..Registro Borrado con Exito")
+            return redirect(url_for('admin', id='salas'))
+    else:
+        flash("El usuario no esta autenticado en la plataforma")
+        return redirect(url_for('login')) 
 
 ###### Editar Registros en la base de datos ###################
 @app.route("/update/<string:dato>", methods = ['GET', 'POST'])
@@ -206,117 +233,178 @@ def update(dato):
     form= addForm()
     datas = db.session.query(Peliculas).filter(Peliculas.id == 1).all()
     lista = dato.split(" ")
-    if (lista[0] == 'salas'):
-        datos = Salas.query.get(lista[1])
-        if request.method == "GET": 
-            nombre = 'salas'
-            return render_template('formEdit.html', nombre=nombre, dato1=datos.nombre, dato2=datos.capacidad, form=form)
-        elif request.method == "POST":
+    if current_user.is_authenticated:
+        if (lista[0] == 'salas'):
             datos = Salas.query.get(lista[1])
-            datos.nombre=form.nombre_sala.data
-            datos.capacidad = form.capacidad.data
-            db.session.commit()
-            flash("..Registro Editado con Exito..")
-            return redirect(url_for('admin', id='salas'))  
-    elif (lista[0] == 'peliculas'):
-        datos = Peliculas.query.get(lista[1])
-        if request.method == "GET": 
-            nombre = 'peliculas'
-            id = lista[1]
-            return render_template('formEdit.html', nombre=nombre, dato1=datos.titulo, dato2=datos.genero, dato3=datos.duracion, dato4=datos.clasificacion, dato5=datos.estado, form=form)
-        elif request.method == "POST":
-            datos.titulo=form.titulo.data
-            datos.genero = form.genero.data
-            datos.duracion=form.duracion.data
-            datos.clasificacion=form.clasificacion.data
-            datos.estado=form.estado.data
-            db.session.commit()
-            flash("..Registro Editado con Exito..")
-            return redirect(url_for('admin', id='peliculas'))  
-    elif (lista[0] == 'usuarios'):
-        form= RegistroForm()
-        datos = Usuarios.query.get(lista[1])
-        if request.method == "GET": 
-            nombre = 'usuarios'
-            return render_template('formEdit.html', nombre=nombre, dato1=datos.nombre, dato2=datos.usuario, dato3=datos.tipo, form=form)
-        elif request.method == "POST":
-            datos.nombre=form.nombre.data
-            datos.usuario = form.usuario.data
-            datos.tipo=form.tipo.data
-            db.session.commit()
-            flash("..Registro Editado con Exito..")
-            return redirect(url_for('admin', id='usuarios'))     
-    elif (lista[0] == 'funciones'):
-        #form= RegistroForm()
-        datos = Funciones.query.get(lista[1])
-        if request.method == "GET": 
-            nombre = 'funciones'
-            return render_template('formEdit.html', nombre=nombre, dato1=datos.id_sala, dato2=datos.id_horario, dato3=datos.id_pelicula, dato4=datos.valor, form=form)
-        elif request.method == "POST":
-            datos.nombre=form.id_sala.data
-            datos.usuario = form.id_horario.data
-            datos.tipo=form.id_pelicula.data
-            datos.valor=form.valor.data
-            db.session.commit()
-            flash("..Registro Editado con Exito..")
-            return redirect(url_for('admin', id='funciones'))   
-    elif (lista[0] == 'horarios'):
-        datos = Horarios.query.get(lista[1])
-        if request.method == "GET": 
-            nombre = 'horarios'
-            return render_template('formEdit.html', nombre=nombre, dato1=datos.id_horario, dato2=datos.dia, dato3=datos.hora_fun, form=form)
-        elif request.method == "POST":
-            datos.id_horario=form.id_horario.data
-            datos.dia = form.dia.data
-            datos.hora_fun=form.hora_funcion.data
-            db.session.commit()
-            flash("..Registro Editado con Exito..")
-            return redirect(url_for('admin', id='horarios'))   
+            if request.method == "GET": 
+                nombre = 'salas'
+                return render_template('formEdit.html', nombre=nombre, dato1=datos.nombre, dato2=datos.capacidad, form=form)
+            elif request.method == "POST":
+                if form.validate_on_submit():
+                    datos = Salas.query.get(lista[1])
+                    datos.nombre=form.nombre_sala.data
+                    datos.capacidad = form.capacidad.data
+                    db.session.commit()
+                    flash("..Registro Editado con Exito..")
+                    return redirect(url_for('admin', id='salas'))
+                else:
+                    flash("...la informacion del formulario esta incompleta, por favor verifique la informacion ...")
+                    return redirect(url_for('admin', id='salas')) 
+        elif (lista[0] == 'peliculas'):
+            datos = Peliculas.query.get(lista[1])
+            if request.method == "GET": 
+                nombre = 'peliculas'
+                id = lista[1]
+                return render_template('formEdit.html', nombre=nombre, dato1=datos.titulo, dato2=datos.genero, dato3=datos.duracion, dato4=datos.clasificacion, dato5=datos.estado, form=form)
+            elif request.method == "POST":
+                if form.validate_on_submit():
+                    datos.titulo=form.titulo.data
+                    datos.genero = form.genero.data
+                    datos.duracion=form.duracion.data
+                    datos.clasificacion=form.clasificacion.data
+                    datos.estado=form.estado.data
+                    db.session.commit()
+                    flash("..Registro Editado con Exito..")
+                    return redirect(url_for('admin', id='peliculas')) 
+                else:
+                    flash("...la informacion del formulario esta incompleta, por favor verifique la informacion ...")
+                    return redirect(url_for('admin', id='peliculas'))      
+        elif (lista[0] == 'usuarios'):
+            form= RegistroForm()
+            datos = Usuarios.query.get(lista[1])
+            if request.method == "GET": 
+                nombre = 'usuarios'
+                return render_template('formEdit.html', nombre=nombre, dato1=datos.nombre, dato2=datos.usuario, dato3=datos.tipo, form=form)
+            elif request.method == "POST":
+                if form.validate_on_submit():
+                    datos.nombre=form.nombre.data
+                    datos.usuario = form.usuario.data
+                    datos.tipo=form.tipo.data
+                    db.session.commit()
+                    flash("..Registro Editado con Exito..")
+                    return redirect(url_for('admin', id='usuarios')) 
+                else:
+                    flash("...la informacion del formulario esta incompleta, por favor verifique la informacion ...")
+                    return redirect(url_for('admin', id='usuarios'))        
+        elif (lista[0] == 'funciones'):
+            #form= RegistroForm()
+            datos = Funciones.query.get(lista[1])
+            if request.method == "GET": 
+                nombre = 'funciones'
+                return render_template('formEdit.html', nombre=nombre, dato1=datos.id_sala, dato2=datos.id_horario, dato3=datos.id_pelicula, dato4=datos.valor, form=form)
+            elif request.method == "POST":
+                if form.validate_on_submit():
+                    datos.nombre=form.id_sala.data
+                    datos.usuario = form.id_horario.data
+                    datos.tipo=form.id_pelicula.data
+                    datos.valor=form.valor.data
+                    db.session.commit()
+                    flash("..Registro Editado con Exito..")
+                    return redirect(url_for('admin', id='funciones'))
+                else:
+                    flash("...la informacion del formulario esta incompleta, por favor verifique la informacion ...")
+                    return redirect(url_for('admin', id='funciones'))         
+        elif (lista[0] == 'horarios'):
+            datos = Horarios.query.get(lista[1])
+            if request.method == "GET": 
+                nombre = 'horarios'
+                return render_template('formEdit.html', nombre=nombre, dato1=datos.id_horario, dato2=datos.dia, dato3=datos.hora_fun, form=form)
+            elif request.method == "POST":
+                if form.validate_on_submit():
+                    datos.id_horario=form.id_horario.data
+                    datos.dia = form.dia.data
+                    datos.hora_fun=form.hora_funcion.data
+                    db.session.commit()
+                    flash("..Registro Editado con Exito..")
+                    return redirect(url_for('admin', id='horarios'))
+                else:
+                    flash("...la informacion del formulario esta incompleta, por favor verifique la informacion ...")
+                    return redirect(url_for('admin', id='horarios'))              
+        else:
+            return render_template('formAdmin.html', nombre='peliculas', form=form)
     else:
-        return render_template('formAdmin.html', nombre='peliculas', form=form)
+        flash("El usuario no esta autenticado en la plataforma")
+        return redirect(url_for('login')) 
 
-#######consulta de funciones y peliculas  de los usuarios#############
+####### consulta de funciones y peliculas  de los usuarios #############
 @app.route('/usuario', methods = ['GET', 'POST'])
 def usuario():
-    conn = get_db_connection()
-    datos = conn.execute('SELECT titulo FROM peliculas').fetchall()
-    conn.close()
+    pelicula = (db.session.query(Peliculas.titulo, Peliculas.genero,Peliculas.imagen, Peliculas.resena)
+                    .filter(Peliculas.estado == 'PROYECCION').all())
+    datos =[]
+    for p in pelicula:
+        datos.append(p)
     if request.method == 'GET':
         return render_template('formUsuario.html', datos=datos)
     elif request.method == 'POST':
         titulo = request.form['pelicula']
+        cantidad = request.form['cantidad']
         listaP = db.session.query(Peliculas.id ).filter(Peliculas.titulo ==titulo).all()
         id =(listaP[0][0]) #my_data.email = request.form['email']
         dia = request.form['dia']
-
-        my_data = (db.session.query(Peliculas.id, Peliculas.titulo, Horarios.dia, Horarios.hora_fun, Salas.nombre, Funciones.valor)
+        my_data = (db.session.query(Funciones.id, Peliculas.titulo, Horarios.dia, Horarios.hora_fun, Salas.nombre, Funciones.valor)
                 .filter(Peliculas.id == Funciones.id_pelicula)
                 .filter(Funciones.id_horario == Horarios.id_horario)
                 .filter(Funciones.id_sala == Salas.id)
+                .filter(Funciones.id_pelicula == Peliculas.id)
                 .filter(Horarios.dia == dia)
                 .filter(Peliculas.id == id).all())
         if (len(my_data) == 0):
             flash("La consulta no encontro registros disponibles")
             return render_template('formUsuario.html', datos=datos)
         else:
-            return render_template('formUsuario.html', datos=datos, lista=my_data, nombre=titulo)
+            return render_template('formUsuario.html', datos=datos, lista=my_data, nombre=titulo, cantidad= cantidad)
 
-###########Guardar la venta de tiquetes#########
+###########Guardar la venta de tiquetes #########
 @app.route('/ventas/<id>',  methods = ['GET', 'POST'])
 def ventas(id):
+    lista = id.split(" ")
+    idp= lista[0]
+    cantidad= int(lista[1])
     conn = get_db_connection()
     datos = conn.execute('SELECT titulo FROM peliculas').fetchall()
     conn.close()
     if request.method == 'GET':
         if current_user.is_authenticated:
-            venta = Ventas(id_usuario=current_user.id, id_pelicula=id, num_boletas = 1)
-            db.session.add(venta)
-            db.session.commit()
-            flash("La compra se ha realizado con exito")
+            data = db.session.query(Funciones).get(idp)
+            total = (db.session.query(Salas.capacidad, func.sum(Ventas.num_boletas))
+                .filter(Ventas.id_sala == Salas.id)
+                .filter(Ventas.id_horario == data.id_horario)
+                .filter(Ventas.id_sala == data.id_sala).all())
+            capacidad = total[0][0]
+            tiquetes = (total[0][1])
+            if (capacidad == None) or (int(tiquetes) < int(capacidad)):
+                venta = Ventas(id_usuario=current_user.id, id_pelicula=int(data.id_pelicula), id_sala=int(data.id_sala), id_horario=data.id_horario, num_boletas=cantidad)
+                db.session.add(venta)
+                db.session.commit()
+                flash("La compra se ha realizado con exito")
+                return redirect(url_for('usuario'))
+            else:
+                flash("la sala esta llena, no es posible vender mas tiquetes... ")
+                return redirect(url_for('usuario'))
         else:
-            flash("El usaurio no esta autenticado en la plataforma")
+            flash("El usuario no esta autenticado en la plataforma")
             return redirect(url_for('login')) 
+    else:
         return render_template('formUsuario.html', datos=datos)
+
+###### GESTION DE INFORMACION DE VENTAS #############
+@app.route('/adminventas/', methods = ['GET', 'POST'])
+def adminventas():
+    listaV = (db.session.query(Usuarios.usuario, Peliculas.titulo, Horarios.dia, Horarios.hora_fun, Salas.nombre, Ventas.num_boletas,)
+                .filter(Ventas.id_usuario == Usuarios.id)
+                .filter(Ventas.id_pelicula == Peliculas.id)
+                .filter(Ventas.id_horario == Horarios.id_horario)
+                .filter(Ventas.id_sala == Salas.id).all())
+
+    listaR = (db.session.query(Horarios.dia, Horarios.hora_fun, Salas.nombre, func.sum(Ventas.num_boletas), Salas.capacidad)
+                .group_by(Ventas.id_horario, Ventas.id_sala)
+                .filter(Ventas.id_usuario == Usuarios.id)
+                .filter(Ventas.id_pelicula == Peliculas.id)
+                .filter(Ventas.id_horario == Horarios.id_horario)
+                .filter(Ventas.id_sala == Salas.id).all())
+    return render_template('formAdminVentas.html', lista=listaV, lista2=listaR)
+
 
 ####### muestra la reseña de la pelicula ##############
 @app.route('/resena/<string:texto>', methods = ['GET', 'POST'])
@@ -324,6 +412,7 @@ def resena(texto):
     resena = texto
     return render_template('formIndex.html', texto=resena)
 
+####### musestra las funciones disponbles #########
 @app.route('/funciones/', methods = ['GET', 'POST'])
 def funciones():
     if request.method == 'GET':
@@ -331,7 +420,7 @@ def funciones():
                 .filter(Funciones.id_horario == Horarios.id_horario)
                 .filter(Funciones.id_pelicula == Peliculas.id)
                 .filter(Horarios.dia == 'SABADO').distinct().all())
-        #mylista =[('EL ULTIMO MERCENARIO','/static/img/pelicula4.jpg',('14:00','17:00','19:00','21:00')),('LA GONORREA SHANGAI','/static/img/pelicula3.jpg',('16:00','17:00','19:00','21:00'),('14:00','18:00'))]
+        #mylista =[('EL ULTIMO MERCENARIO','/static/img/pelicula4.jpg',('14:00','17:00','19:00','21:00')),('SHANGAI','/static/img/pelicula3.jpg',('16:00','17:00','19:00','21:00'),('14:00','18:00'))]
         lista4=[]
         newlist = []
         for j in listaP1:
@@ -357,7 +446,6 @@ def funciones():
                 .filter(Funciones.id_horario == Horarios.id_horario)
                 .filter(Funciones.id_pelicula == Peliculas.id)
                 .filter(Horarios.dia == dia).distinct().all())
-        #mylista =[('EL ULTIMO MERCENARIO','/static/img/pelicula4.jpg',('14:00','17:00','19:00','21:00')),('LA GONORREA SHANGAI','/static/img/pelicula3.jpg',('16:00','17:00','19:00','21:00'),('14:00','18:00'))]
         lista4=[]
         newlist = []
         for j in listaP1:
@@ -403,6 +491,9 @@ def gestionComentario():
                 .filter(Peliculas.id == Comentarios.id_pelicula)
                 .filter(Comentarios.id_usuario == user).all())
         return render_template('formAdminUser.html', lista=listaC)
+    else:
+        flash("El usaurio no esta autenticado en la plataforma")
+        return redirect(url_for('login')) 
 
 ######## Editar Comentarios ##########
 @app.route('/editComentario/', methods = ['GET', 'POST'])
@@ -436,10 +527,9 @@ def addComen():
     form = addForm() 
     if request.method == 'GET':
         user = current_user.id
-        print(user)
         listaP = (db.session.query(Peliculas.titulo)
                  .filter(Peliculas.id == Ventas.id_pelicula)
-                 .filter(Ventas.id_usuario == user).all())
+                 .filter(Ventas.id_usuario == user).distinct().all())
         lista =[]
         for l in listaP:
             lista.append(l[0])

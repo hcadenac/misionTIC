@@ -89,8 +89,12 @@ class Ventas(db.Model):
     id_usuario = db.Column(db.Integer(), db.ForeignKey('usuarios.id'))
     id_pelicula = db.Column(db.Integer(), db.ForeignKey('peliculas.id'))
     num_boletas = db.Column(db.Integer(), nullable=False)
+    id_sala = db.Column(db.Integer(), db.ForeignKey('salas.id'))
+    id_horario = db.Column(db.Integer(), db.ForeignKey('horarios.id_horario'))
     pelicula = db.relationship(Peliculas)
-    usuurio = db.relationship(Usuarios)
+    usuario = db.relationship(Usuarios)
+    sala = db.relationship(Salas)
+    horario = db.relationship(Horarios)
 
     def __repr__(self):
         return '<Comentarios {}>'.format(self.id)

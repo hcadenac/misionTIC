@@ -11,7 +11,6 @@ from wtforms.validators import (DataRequired, Email, EqualTo, Length,
 class LoginForm(FlaskForm):
     usuario = EmailField('Email', validators=[DataRequired(message='Debe ingresar el usuario'), Email()])
     password = PasswordField('Password', validators=[DataRequired(message='Debe ingresar el password')])
-    recordar = BooleanField('Recuérdame')
     submit = SubmitField('Ingresar')
 
 class RegistroForm(FlaskForm):
@@ -19,7 +18,7 @@ class RegistroForm(FlaskForm):
     usuario = EmailField('Email', validators=[DataRequired(message='Debe ingresar el Email'), Email()])
     password = PasswordField('Password', validators=[DataRequired(message='Debe ingresar el password')])
     confirm_paswd = PasswordField('Confirmar Password', validators=[DataRequired(message='Debe ingresar el password'), EqualTo('password', 'Las contraseñas no coinciden')])
-    #tipo = StringField('Tipo Usuario', validators=[DataRequired(message='Debe ingresar el nombre')])
+    tipo = StringField('Tipo Usuario', validators=[DataRequired(message='Debe ingresar el nombre')])
     submit = SubmitField('Registrarse')
 
 class addForm(FlaskForm):
@@ -38,7 +37,7 @@ class addForm(FlaskForm):
     hora_funcion = StringField('Hora de la Funcion',validators=[DataRequired(message='Debe ingresar la hora')])
 
     nombre_sala= StringField('Nombre Sala',validators=[DataRequired(message='Debe ingresar el nombre')])
-    capacidad = IntegerField('Capacidad', validators=[DataRequired()])
+    capacidad = IntegerField('Capacidad', validators=[DataRequired(message='Debe ingresar el nombre'), Length(min=1, max= 3)])
     #remember_me = BooleanField('Recuerdame')
     submit = SubmitField('Guardar Registro')
 

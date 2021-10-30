@@ -148,12 +148,13 @@ table.table .avatar {
       {% endfor %}
   {% endif %}
 {% endwith %}
+
   <div class="contenedor-l">
     <h3 style="text-align: center; color: rgb(233, 16, 16);">Bienvenido a Cinemark, {{ current_user.nombre }} </h3>
       <h2 style="text-align: center; color: #f01532;">Compra de Tiquetes</h2>
-      <form id= "form-row" class="col-5 mx-auto border" style="margin-left: 110px;" method="POST">
+      <form id= "form-row" class="col-5 mx-auto border" style="margin-left: 80px;" method="POST">
           <div class="form-row" >
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-5">
               <label for="inputNombre">Lista Peliculas</label>
               <select class="form-control" id="sel1" name="pelicula">
                 {% for data in datos %}
@@ -161,7 +162,7 @@ table.table .avatar {
                 {% endfor %}
               </select>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label for="inputapellido">Dia</label>
               <select class="form-control" id="sel1" name ="dia">
                   <option>LUNES</option>
@@ -173,6 +174,20 @@ table.table .avatar {
                   <option>DOMINGO</option>
                 </select>
             </div>
+            <div class="form-group col-md-2">
+              <label for="inputapellido">N. Tiquetes</label>
+              <select class="form-control" id="sel1" name ="cantidad">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                </select>
+            </div>
           </div>
           <div>
           <button type="submit" class="mb-7 btn btn-success" style="margin-left: 10px;  width: 80%;">Consultar</button>
@@ -181,16 +196,17 @@ table.table .avatar {
       </div>
         <div class="container">
           <div class="table-responsive">
-              <div class="table-wrapper" style="margin-left: 130px; border: solid 1px rgba(129, 140, 161, 0.705);">
+              <div class="table-wrapper" style="margin-left: 20px; border: solid 1px rgba(129, 140, 161, 0.705);">
                   <table class="table table-striped table-hover">
                       <thead>
                           <tr>
                               <th style="color: #000080;">COD</th>
-                              <th style="width: 400px; color: #000080;">TITULO</th>
+                              <th style="width: 300px; color: #000080;">TITULO</th>
                               <th style="color: #000080;">DIA</th>
                               <th style="color: #000080;">HORA</th>
                               <th style="color: #000080;">SALA</th>
                               <th style="color: #000080;" >VALOR</th>
+                              <th style="color: #000080;" >TIQUETES</th>
                               <th style="color: #000080;">COMPRAR</th>
                           </tr>
                       </thead>
@@ -200,8 +216,9 @@ table.table .avatar {
                               {% for d in linea %}
                               <td>{{ d }}</td>
                               {% endfor %}
+                              <td>{{ cantidad }}</td>
                               <td>
-                                <a href="/ventas/{{ lista[0][0] }}" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xe854;</i>
+                                <a href="/ventas/{{ linea[0] }} {{ cantidad }}" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xe854;</i>
                               </td>
                           </tr>
                           {% endfor %}

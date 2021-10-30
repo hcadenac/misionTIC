@@ -32,30 +32,21 @@
         <div class="mb-7">
           {{ form.nombre.label }}
           {{ form.nombre(class='form-control') }}
-          <!-- <label for="email">Email:</label>
-          <input type="email" class="form-control" id="email" placeholder="" name="email"> -->
         </div>
         <div class="mb-7">
           {{ form.usuario.label }}
           {{ form.usuario(class='form-control') }}
-          <!-- <label for="email">Usuario:</label>
-          <input type="email" class="form-control" id="email" placeholder="" name="email"> -->
         </div>
         <div class="mb-7">
           {{ form.password.label }}
           {{ form.password(class='form-control') }}
-          <!-- <label for="email">Email:</label>
-          <input type="email" class="form-control" id="email" placeholder="" name="email"> -->
         </div>
         <div class=div class="mb-7">
           {{ form.confirm_paswd.label }}
           {{ form.confirm_paswd(class='form-control') }}
-          <!-- <label for="pwd">Contraseña:</label>
-          <input type="password" class="form-control" id="pwd" placeholder="" name="pwd"> -->
         </div>
         <br>
         {{ form.submit(class='form-control btn btn-danger') }}
-        <!-- <button type="submit" class="mb-7 btn btn-danger" style="width: 100%;">Ingresar</button> -->
         <div class="grupo">
           {% if mensaje %}
               {{mensaje}}

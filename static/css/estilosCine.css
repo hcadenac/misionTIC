@@ -80,5 +80,95 @@ h2,h3,h4,h5{
 .container {
     display: grid;
   }
+  .table-wrapper {
+    width: 100%;
+    margin: 30px auto;
+    background: #fff;
+    padding: 1px;	
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+
+    .table-title {
+      background: #f02d37;
+      color: white;
+      padding-bottom: 20px;
+      padding-top: 5px;
+      margin: 0 0 6px;
+      height: 45px;
+      border-radius: 5px;
+    }
+    .table-title h2 {
+      margin: 5px 0 0;
+      margin-left: 10px;
+      font-size: 22px;
+    }
+    table.table {
+        table-layout: fixed;
+    }
+    .table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+    }
+    table.table th i {
+      font-size: 13px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    table.table th:last-child {
+      width: 100px;
+    }
+    table.table td a {
+      cursor: pointer;
+      display: inline-block;
+      margin: 0 5px;
+      min-width: 24px;
+    }    
+  table.table td a.add {
+      color: #27C46B;
+    }
+    table.table td a.edit {
+      color: #FFC107;
+    }
+    table.table td a.delete {
+       color: #E34724;
+    }
+    table.table td i {
+      font-size: 19px;
+    }
+  table.table td a.add i {
+      font-size: 24px;
+      margin-right: -1px;
+      position: relative;
+      top: 3px;
+    }    
+    table.table .form-control {
+      height: 32px;
+      line-height: 32px;
+      box-shadow: none;
+      border-radius: 2px;
+    }
+  table.table td .add {
+    display: none;
+  }
+  .table-title .btn-group {
+      float: right;
+  }
+  .table-title .btn {
+      color: #fff;
+      float: right;
+      font-size: 13px;
+      border: none;
+      min-width: 50px;
+      border-radius: 2px;
+      margin-right: 5px;
+  } 
+  .table-title .btn i {
+      float: left;
+      font-size: 21px;
+      margin-right: 5px;
+  } 
+  .table-title .btn span {
+      float: left;
+      margin-top: 2px;
+  }
 
   
