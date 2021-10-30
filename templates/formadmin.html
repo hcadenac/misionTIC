@@ -101,10 +101,12 @@
                     <td style="color:#0d457c;font-size:80%;">{{ post['identificacion'] }}</td>
                     <td style="color:#0d457c;font-size:80%;">{{ post['usuario'] }}</td>
                     <td style="color:#0d457c;font-size:80%;">{{ post['tipo'] }}</td>
+                    {% if current_user.tipo == 'sadmin' %}
                     <td>
                       <a href="/update/{{ nombre }} {{ post['id'] }}" class="edit" title="Edit" data-toggle="modal"><i class="material-icons">&#xE254;</i></a>
                       <a href="/delete/{{ nombre }} {{ post['id'] }}" class="delete" title="Delete" data-toggle="modal" onclick="return confirm('Esta Seguro de Borrar el Registro ?')"><i class="material-icons">&#xE872;</i></a>
                     </td>
+                    {% endif%}
                 </tr>
                 {% endfor %}
             </tbody>

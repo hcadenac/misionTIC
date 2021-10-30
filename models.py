@@ -12,7 +12,7 @@ class Usuarios(db.Model, UserMixin):
     nombre = db.Column(db.String(64))
     usuario = db.Column(db.String(50), index=True, unique=True)
     password = db.Column(db.String(150))
-    tipo = db.Column(db.String(5))
+    tipo = db.Column(db.String(7))
 
     def __repr__(self):
         return '<Usuario {}>'.format(self.usuario)

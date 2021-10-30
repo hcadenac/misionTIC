@@ -79,7 +79,7 @@ h2,h3,h4,h5{
 }
 .container {
     display: grid;
-  }
+  } 
   .table-wrapper {
     width: 100%;
     margin: 30px auto;

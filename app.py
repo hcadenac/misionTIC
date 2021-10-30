@@ -240,16 +240,12 @@ def update(dato):
                 nombre = 'salas'
                 return render_template('formEdit.html', nombre=nombre, dato1=datos.nombre, dato2=datos.capacidad, form=form)
             elif request.method == "POST":
-                if form.validate_on_submit():
-                    datos = Salas.query.get(lista[1])
-                    datos.nombre=form.nombre_sala.data
-                    datos.capacidad = form.capacidad.data
-                    db.session.commit()
-                    flash("..Registro Editado con Exito..")
-                    return redirect(url_for('admin', id='salas'))
-                else:
-                    flash("...la informacion del formulario esta incompleta, por favor verifique la informacion ...")
-                    return redirect(url_for('admin', id='salas')) 
+                datos = Salas.query.get(lista[1])
+                datos.nombre=form.nombre_sala.data
+                datos.capacidad = form.capacidad.data
+                db.session.commit()
+                flash("..Registro Editado con Exito..")
+                return redirect(url_for('admin', id='salas'))         
         elif (lista[0] == 'peliculas'):
             datos = Peliculas.query.get(lista[1])
             if request.method == "GET": 
@@ -257,7 +253,6 @@ def update(dato):
                 id = lista[1]
                 return render_template('formEdit.html', nombre=nombre, dato1=datos.titulo, dato2=datos.genero, dato3=datos.duracion, dato4=datos.clasificacion, dato5=datos.estado, form=form)
             elif request.method == "POST":
-                if form.validate_on_submit():
                     datos.titulo=form.titulo.data
                     datos.genero = form.genero.data
                     datos.duracion=form.duracion.data
@@ -265,10 +260,7 @@ def update(dato):
                     datos.estado=form.estado.data
                     db.session.commit()
                     flash("..Registro Editado con Exito..")
-                    return redirect(url_for('admin', id='peliculas')) 
-                else:
-                    flash("...la informacion del formulario esta incompleta, por favor verifique la informacion ...")
-                    return redirect(url_for('admin', id='peliculas'))      
+                    return redirect(url_for('admin', id='peliculas'))     
         elif (lista[0] == 'usuarios'):
             form= RegistroForm()
             datos = Usuarios.query.get(lista[1])
@@ -276,16 +268,12 @@ def update(dato):
                 nombre = 'usuarios'
                 return render_template('formEdit.html', nombre=nombre, dato1=datos.nombre, dato2=datos.usuario, dato3=datos.tipo, form=form)
             elif request.method == "POST":
-                if form.validate_on_submit():
                     datos.nombre=form.nombre.data
                     datos.usuario = form.usuario.data
                     datos.tipo=form.tipo.data
                     db.session.commit()
                     flash("..Registro Editado con Exito..")
-                    return redirect(url_for('admin', id='usuarios')) 
-                else:
-                    flash("...la informacion del formulario esta incompleta, por favor verifique la informacion ...")
-                    return redirect(url_for('admin', id='usuarios'))        
+                    return redirect(url_for('admin', id='usuarios'))   
         elif (lista[0] == 'funciones'):
             #form= RegistroForm()
             datos = Funciones.query.get(lista[1])
@@ -293,33 +281,27 @@ def update(dato):
                 nombre = 'funciones'
                 return render_template('formEdit.html', nombre=nombre, dato1=datos.id_sala, dato2=datos.id_horario, dato3=datos.id_pelicula, dato4=datos.valor, form=form)
             elif request.method == "POST":
-                if form.validate_on_submit():
+              
                     datos.nombre=form.id_sala.data
                     datos.usuario = form.id_horario.data
                     datos.tipo=form.id_pelicula.data
                     datos.valor=form.valor.data
                     db.session.commit()
                     flash("..Registro Editado con Exito..")
-                    return redirect(url_for('admin', id='funciones'))
-                else:
-                    flash("...la informacion del formulario esta incompleta, por favor verifique la informacion ...")
-                    return redirect(url_for('admin', id='funciones'))         
+                    return redirect(url_for('admin', id='funciones'))    
         elif (lista[0] == 'horarios'):
             datos = Horarios.query.get(lista[1])
             if request.method == "GET": 
                 nombre = 'horarios'
                 return render_template('formEdit.html', nombre=nombre, dato1=datos.id_horario, dato2=datos.dia, dato3=datos.hora_fun, form=form)
             elif request.method == "POST":
-                if form.validate_on_submit():
+                
                     datos.id_horario=form.id_horario.data
                     datos.dia = form.dia.data
                     datos.hora_fun=form.hora_funcion.data
                     db.session.commit()
                     flash("..Registro Editado con Exito..")
                     return redirect(url_for('admin', id='horarios'))
-                else:
-                    flash("...la informacion del formulario esta incompleta, por favor verifique la informacion ...")
-                    return redirect(url_for('admin', id='horarios'))              
         else:
             return render_template('formAdmin.html', nombre='peliculas', form=form)
     else:

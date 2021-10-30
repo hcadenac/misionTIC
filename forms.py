@@ -18,7 +18,7 @@ class RegistroForm(FlaskForm):
     usuario = EmailField('Email', validators=[DataRequired(message='Debe ingresar el Email'), Email()])
     password = PasswordField('Password', validators=[DataRequired(message='Debe ingresar el password')])
     confirm_paswd = PasswordField('Confirmar Password', validators=[DataRequired(message='Debe ingresar el password'), EqualTo('password', 'Las contraseñas no coinciden')])
-    tipo = StringField('Tipo Usuario', validators=[DataRequired(message='Debe ingresar el nombre')])
+    tipo = StringField('Tipo Usuario')
     submit = SubmitField('Registrarse')
 
 class addForm(FlaskForm):

@@ -31,10 +31,6 @@
       {{ form.estado.label }}
       {{ form.estado(class='form-control', value =dato5) }}
     </div>
-    <!-- <div class=div class="mb-7">
-      {{ form.resena.label }}
-      {{ form.resena(class='form-control') }}
-    </div> -->
 
     <!-- ####crea formulario para Editar funciones#### -->
     {% elif nombre =='funciones' %}
@@ -64,10 +60,12 @@
       {{ form.usuario.label }}
       {{ form.usuario(class='form-control', value =dato2) }}
     </div>
-    <div class="mb-7">
+    {% if current_user.tipo == 'sadmin' %}
+    <div class=div class="mb-7">
       {{ form.tipo.label }}
       {{ form.tipo(class='form-control', value =dato3) }}
     </div>
+    {% endif %}
     <!-- ####crea formulario para agregar horarios#### -->
   {% elif nombre =='horarios' %}
     <div class="mb-7">
@@ -95,7 +93,6 @@
       <div class="mb-7">
         {{ form.capacidad.label }}
         {{ form.capacidad(class='form-control', value =dato2 ) }}
-        <!-- <input type="text" class="form-control" id="email" placeholder="" name="email" value = "{{ nombre }}"> -->
     {% else %}
 
     <h1>NO ES POSIBLE ADICIONAR  INFORMACION DE USUARIOS</h1>
